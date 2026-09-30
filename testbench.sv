@@ -57,7 +57,7 @@ module testbench;
 
     initial begin
         if (!(p_width inside {16, 32, 64})) begin
-            $fatal(1, "[TOP] p_width must be 16, 32 or 64 (got %0d)", p_width);
+            $fatal(1, "[TOP] p_width debe ser 16, 32 o 64 (se recibio %0d)", p_width);
         end
         if ($test$plusargs("DUMP")) begin
             $dumpfile("dump.vcd");

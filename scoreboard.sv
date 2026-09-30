@@ -81,7 +81,7 @@ class bus_scoreboard #(parameter int width = 16, parameter int drvs = 4);
     endtask
 
     function void report();
-        $display("[SB] unicast=%0d bcast=%0d invalid=%0d self=%0d expected_receptions=%0d",
+        $display("[SB] unicast=%0d broadcast=%0d invalidos=%0d a_si_mismo=%0d recepciones_esperadas=%0d",
                  n_unicast, n_bcast, n_invalid, n_self, n_expected);
     endfunction
 

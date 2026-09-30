@@ -85,11 +85,11 @@ class bus_checker #(parameter int width = 16, parameter int drvs = 4);
         if (idx < 0) begin
             if (match_unsent) begin
                 n_early++;
-                $error("[CHK] %h at rx %0d arrived before being popped from its FIFO, t=%0t",
+                $error("[CHK] %h en rx %0d llego antes de salir de su FIFO, t=%0t",
                        obs.pack(), rx, $realtime);
             end else begin
                 n_unexpected++;
-                $error("[CHK] Unexpected %h at rx %0d, t=%0t", obs.pack(), rx, $realtime);
+                $error("[CHK] Paquete inesperado %h en rx %0d, t=%0t", obs.pack(), rx, $realtime);
             end
             return;
         end
@@ -102,7 +102,7 @@ class bus_checker #(parameter int width = 16, parameter int drvs = 4);
         // (so a single lost packet does not cascade into order errors).
         if (e.overtaken) begin
             n_order++;
-            $error("[CHK] Out of order at rx %0d: %h from src %0d arrived after a newer packet",
+            $error("[CHK] Fuera de orden en rx %0d: %h del origen %0d llego despues de un paquete mas reciente",
                    rx, obs.pack(), e.tr.src_terminal);
         end
         foreach (pending[rx][j]) begin
@@ -141,14 +141,14 @@ class bus_checker #(parameter int width = 16, parameter int drvs = 4);
         foreach (pending[rx]) begin
             foreach (pending[rx][i]) begin
                 n_missing++;
-                $error("[CHK] Missing %h from src %0d at rx %0d",
+                $error("[CHK] Paquete perdido %h del origen %0d hacia rx %0d",
                        pending[rx][i].tr.pack(), pending[rx][i].tr.src_terminal, rx);
             end
         end
-        $display("[CHK] ok=%0d unexpected=%0d early=%0d out_of_order=%0d missing=%0d",
+        $display("[CHK] correctos=%0d inesperados=%0d antes_de_envio=%0d fuera_de_orden=%0d perdidos=%0d",
                  n_ok, n_unexpected, n_early, n_order, n_missing);
         if (n_ok > 0) begin
-            $display("[CHK] delay min=%0.1f avg=%0.1f max=%0.1f",
+            $display("[CHK] retardo min=%0.1f prom=%0.1f max=%0.1f",
                      min_delay, sum_delay / n_ok, max_delay);
         end
     endfunction
@@ -157,7 +157,7 @@ class bus_checker #(parameter int width = 16, parameter int drvs = 4);
         int fd;
         fd = $fopen(file_name, "w");
         if (fd == 0) begin
-            $error("[CHK] Could not create %s", file_name);
+            $error("[CHK] No se pudo crear %s", file_name);
             return;
         end
         $fwrite(fd, "Tiempo_Envio,Terminal_Origen,Terminal_Destino,Tiempo_Recibido,Retardo,Dato\n");
@@ -171,7 +171,7 @@ class bus_checker #(parameter int width = 16, parameter int drvs = 4);
                     results[i].data);
         end
         $fclose(fd);
-        $display("[CHK] %s written with %0d rows", file_name, results.size());
+        $display("[CHK] %s escrito con %0d filas", file_name, results.size());
     endfunction
 
 endclass

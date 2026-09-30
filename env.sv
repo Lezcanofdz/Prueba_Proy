@@ -74,9 +74,9 @@ class bus_env #(parameter int width = 16, parameter int drvs = 4);
             cycles++;
         end
         if (cycles >= pop_timeout) begin
-            $error("[ENV] The DUT stopped popping packets (timeout after %0d cycles)", cycles);
+            $error("[ENV] El DUT dejo de sacar paquetes de las FIFOs (timeout despues de %0d ciclos)", cycles);
         end else begin
-            $display("[ENV] All packets popped by the DUT at %0t", $realtime);
+            $display("[ENV] El DUT saco todos los paquetes de las FIFOs en %0t", $realtime);
         end
 
         // 2. Every expected reception arrived, or timeout
@@ -86,7 +86,7 @@ class bus_env #(parameter int width = 16, parameter int drvs = 4);
             cycles++;
         end
         if (cycles >= drain_timeout) begin
-            $display("[ENV] Drain timeout after %0d cycles", cycles);
+            $display("[ENV] Timeout esperando los paquetes pendientes despues de %0d ciclos", cycles);
         end
 
         // 3. Let packets without receivers (invalid addresses) finish

@@ -67,7 +67,7 @@ class fifo_emulator #(parameter int width = 16, parameter int drvs = 4);
                     current_pkt.sent_time = $realtime;
                     n_sent++;
                 end else begin
-                    $error("[DRV-%0d] pop received with an empty FIFO at %0t", id, $realtime);
+                    $error("[DRV-%0d] pop recibido con la FIFO vacia en %0t", id, $realtime);
                 end
             end
             if (pkt_queue.size() > 0) begin
@@ -122,7 +122,7 @@ class bus_driver #(parameter int width = 16, parameter int drvs = 4);
         forever begin
             agent_drv_mbx.get(pkt);
             if (pkt.src_terminal >= drvs) begin
-                $error("[DRV] Invalid source terminal %0d, packet dropped", pkt.src_terminal);
+                $error("[DRV] Terminal de origen invalida %0d, paquete descartado", pkt.src_terminal);
             end else begin
                 parent_child_mbx[pkt.src_terminal].put(pkt);
             end

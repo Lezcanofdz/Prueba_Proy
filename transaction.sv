@@ -59,7 +59,7 @@ class transaction #(parameter int width = 16, parameter int drvs = 4);
     endfunction
 
     function void print(string tag = "");
-        $display("[%s] src=%0d dst=%0d delay=%0d payload=%h",
+        $display("[%s] origen=%0d destino=%0d retardo=%0d dato=%h",
                  tag, src_terminal, dst_addr, delay, payload);
     endfunction
 

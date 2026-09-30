@@ -18,11 +18,11 @@ class generator #(parameter int width = 16, parameter int drvs = 4);
 
     task run();
         transaction #(width, drvs) pkt;
-        $display("[GEN] Creating %0d transactions", num_transactions);
+        $display("[GEN] Creando %0d transacciones", num_transactions);
         for (int i = 0; i < num_transactions; i++) begin
             pkt = new();
             if (!pkt.randomize()) begin
-                $fatal(1, "[GEN] Randomization failed on transaction %0d", i);
+                $fatal(1, "[GEN] Fallo la aleatorizacion de la transaccion %0d", i);
             end
             gen_agent_mbx.put(pkt);
             pkt.print($sformatf("GEN %0d", i));

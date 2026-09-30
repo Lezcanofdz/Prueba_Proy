@@ -14,12 +14,12 @@ class bus_test #(parameter int width = 16, parameter int drvs = 4);
     endfunction
 
     task run();
-        $display("[TEST] width=%0d drvs=%0d num_tx=%0d", width, drvs, num_tx);
+        $display("[TEST] ancho=%0d terminales=%0d transacciones=%0d", width, drvs, num_tx);
         env.run();
         if (env.chk.n_errors() == 0 && env.chk.n_ok > 0) begin
-            $display("[TEST] PASSED");
+            $display("[TEST] APROBADO");
         end else begin
-            $display("[TEST] FAILED (%0d errors)", env.chk.n_errors());
+            $display("[TEST] FALLIDO (%0d errores)", env.chk.n_errors());
         end
     endtask
 
