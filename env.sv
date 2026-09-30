@@ -1,93 +1,100 @@
-
+// Class bus_env.sv. The bus_env class is responsible for building every
+// unit of the verification environment, connecting them with mailboxes,
+// starting each one in its own process and deciding when the traffic has
+// been drained so the results can be reported.
 class bus_env #(parameter int width = 16, parameter int drvs = 4);
-    
-    // ------------------------------------------------------------------------
-    // 1. Declaración de Componentes (Activos y Pasivos)
-    // ------------------------------------------------------------------------
-    // Lado Activo (Persona A)
-    generator  #(width)       gen;
-    bus_agent  #(width, drvs) agent;
-    
-    // Lado Pasivo (Persona B)
-    // Nota: Declaramos los componentes del compañero asumiendo nombres estándar
-    bus_monitor    #(width, drvs) monitor;
-    bus_scoreboard #(width)       sb;
-    bus_checker    #(width)       checker;
 
-    // ------------------------------------------------------------------------
-    // 2. Declaración de Buzones (La tubería de comunicación)
-    // ------------------------------------------------------------------------
-    mailbox mbx_gen_agent; // Conecta Generador -> Agente
-    mailbox mbx_agent_sb;  // Conecta Agente -> Scoreboard
-    mailbox mbx_sb_chk;    // Conecta Scoreboard -> Checker (Predicciones)
-    mailbox mbx_mon_chk;   // Conecta Monitor -> Checker (Observaciones)
+    virtual dut_compl_if #(width, drvs) vif;
 
-    // Interfaz virtual de nivel superior
-    virtual dut_compl_if vif;
+    generator #(width, drvs) gen;
+    bus_agent #(width, drvs) agent;
+    bus_driver #(width, drvs) drv;
+    bus_monitor #(width, drvs) mon;
+    bus_scoreboard #(width, drvs) sb;
+    bus_checker #(width, drvs) chk;
 
-    // ------------------------------------------------------------------------
-    // 3. Constructor (Ensamblaje del entorno)
-    // ------------------------------------------------------------------------
-    function new(virtual dut_compl_if vif_in, int num_tx);
-        this.vif = vif_in;
+    mailbox #(transaction #(width, drvs)) gen_agent_mbx;
+    mailbox #(transaction #(width, drvs)) agent_drv_mbx;
+    mailbox #(transaction #(width, drvs)) agent_sb_mbx;
+    mailbox #(transaction #(width, drvs)) mon_chk_mbx;
+    mailbox #(expected_item #(width, drvs)) sb_chk_mbx;
 
-        // A. Instanciar los buzones físicos en memoria
-        mbx_gen_agent = new();
-        mbx_agent_sb  = new();
-        mbx_sb_chk    = new();
-        mbx_mon_chk   = new();
+    // Cycles allowed for the DUT to pop every packet (the bus is shared,
+    // so packets are serialized one after another)
+    int pop_timeout;
+    // Cycles to wait for the expected packets after the FIFOs are empty
+    int drain_timeout;
 
-        // B. Instanciar componentes pasando los buzones y modports correspondientes
-        
-        // El Generador solo necesita su buzón de salida y la cantidad de paquetes
-        gen = new(mbx_gen_agent, num_tx);
-        
-        // El Agente recibe la entrada del generador, la salida al scoreboard y el modport DRV
-        agent = new(mbx_gen_agent, mbx_agent_sb, vif.DRV);
-        
-        // El Monitor recibe su buzón de salida hacia el checker y el modport MON
-        monitor = new(mbx_mon_chk, vif.MON);
-        
-        // El Scoreboard conecta el agente con el checker
-        sb = new(mbx_agent_sb, mbx_sb_chk);
-        
-        // El Checker recibe las expectativas (del SB) y la realidad (del Monitor)
-        checker = new(mbx_sb_chk, mbx_mon_chk);
+    function new(
+        virtual dut_compl_if #(width, drvs) vif,
+        int num_tx
+    );
+        this.vif = vif;
+
+        gen_agent_mbx = new();
+        agent_drv_mbx = new();
+        agent_sb_mbx = new();
+        mon_chk_mbx = new();
+        sb_chk_mbx = new();
+
+        gen = new(gen_agent_mbx, num_tx);
+        agent = new(gen_agent_mbx, agent_drv_mbx, agent_sb_mbx);
+        drv = new(vif, agent_drv_mbx);
+        mon = new(vif, mon_chk_mbx);
+        sb = new(agent_sb_mbx, sb_chk_mbx);
+        chk = new(sb_chk_mbx, mon_chk_mbx);
+
+        // One packet uses roughly width cycles of serialization plus a few
+        // of protocol; allow a full arbitration round per packet
+        pop_timeout = 4 * num_tx * (width + 16) + 1000;
+        drain_timeout = 4 * drvs * (width + 16) + 1000;
     endfunction
 
-    // ------------------------------------------------------------------------
-    // 4. Tarea Principal (Control de ejecución)
-    // ------------------------------------------------------------------------
     task run();
-        $display("[ENV] ==================================================");
-        $display("[ENV] INICIANDO AMBIENTE DE VERIFICACION");
-        $display("[ENV] ==================================================");
+        int cycles;
 
-        // Iniciar todos los componentes reactivos en hilos paralelos (background)
+        // FIFOs idle while the DUT is in reset
+        drv.drive_idle();
+        do @(vif.cb_drv); while (vif.cb_drv.reset !== 1'b0);
+
         fork
+            gen.run();
             agent.run();
-            monitor.run();
+            drv.run();
+            mon.run();
             sb.run();
-            checker.run();
+            chk.run();
         join_none
 
-        // Iniciar el generador en el hilo principal (es el que dicta el ritmo)
-        gen.run();
+        // 1. Every transaction generated and handed to the DUT
+        wait (gen.done);
+        cycles = 0;
+        while ((!drv.is_empty() || gen_agent_mbx.num() != 0) && cycles < pop_timeout) begin
+            @(vif.cb_mon);
+            cycles++;
+        end
+        if (cycles >= pop_timeout) begin
+            $error("[ENV] The DUT stopped popping packets (timeout after %0d cycles)", cycles);
+        end else begin
+            $display("[ENV] All packets popped by the DUT at %0t", $realtime);
+        end
 
-        // Pausar el ambiente hasta que el generador avise que terminó de inyectar todo
-        wait(gen.gen_completed.triggered);
-        $display("[ENV] Generacion de estimulos completada. Esperando vaciado de FIFOs...");
+        // 2. Every expected reception arrived, or timeout
+        cycles = 0;
+        while (chk.outstanding() > 0 && cycles < drain_timeout) begin
+            @(vif.cb_mon);
+            cycles++;
+        end
+        if (cycles >= drain_timeout) begin
+            $display("[ENV] Drain timeout after %0d cycles", cycles);
+        end
 
-        // Esperar un tiempo prudencial para que los últimos paquetes crucen el hardware
-        #500; 
-        
-        // Llamar a la función del compañero para imprimir el resumen y cerrar el CSV
-        checker.final_report();
-        checker.write_csv();
-        
-        $display("[ENV] ==================================================");
-        $display("[ENV] SIMULACION FINALIZADA");
-        $display("[ENV] ==================================================");
+        // 3. Let packets without receivers (invalid addresses) finish
+        repeat (2 * (width + 16)) @(vif.cb_mon);
+
+        sb.report();
+        chk.report();
+        chk.write_csv();
     endtask
 
 endclass

@@ -1,35 +1,26 @@
-
+// Class bus_test.sv. The bus_test class is responsible for configuring the
+// scenario (number of transactions, read from +NUM_TX=<n>), running the
+// environment and printing the final verdict.
 class bus_test #(parameter int width = 16, parameter int drvs = 4);
-    
-    // 1. Declaración del Ambiente
-    bus_env #(width, drvs) env;
-    
-    // Variable para controlar la cantidad de transacciones de esta prueba específica
-    int num_transacciones;
 
-    // 2. Constructor
-    function new(virtual dut_compl_if vif_in);
-        // Para esta prueba base (casos generales), definimos 50 paquetes
-        this.num_transacciones = 50;
-        
-        // Construimos el ambiente pasándole la interfaz y la cantidad de paquetes
-        this.env = new(vif_in, num_transacciones);
+    bus_env #(width, drvs) env;
+    int num_tx;
+
+    function new(
+        virtual dut_compl_if #(width, drvs) vif
+    );
+        if (!$value$plusargs("NUM_TX=%d", num_tx)) num_tx = 50;
+        env = new(vif, num_tx);
     endfunction
 
-    // 3. Tarea principal de la prueba
     task run();
-        $display("[TEST] ==================================================");
-        $display("[TEST] INICIANDO PRUEBA BASE (BASE_TEST)");
-        $display("[TEST] Generando %0d transacciones...", num_transacciones);
-        $display("[TEST] ==================================================");
-
-        // El Test le cede el control al Ambiente. 
-        // Esta línea pausa el Test hasta que el Ambiente (y el Generador) terminen.
+        $display("[TEST] width=%0d drvs=%0d num_tx=%0d", width, drvs, num_tx);
         env.run();
-
-        $display("[TEST] ==================================================");
-        $display("[TEST] PRUEBA FINALIZADA CORRECTAMENTE");
-        $display("[TEST] ==================================================");
+        if (env.chk.n_errors() == 0 && env.chk.n_ok > 0) begin
+            $display("[TEST] PASSED");
+        end else begin
+            $display("[TEST] FAILED (%0d errors)", env.chk.n_errors());
+        end
     endtask
 
 endclass

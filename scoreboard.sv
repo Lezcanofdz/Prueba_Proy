@@ -1,57 +1,88 @@
-// Se parametriza expected_item para que coincida con la llamada del checker
-class expected_item #(parameter int width = 16);
-  int rx_id;
-  transaction #(width) tr;   
-  function new(int rx_id, transaction #(width) tr);
-    this.rx_id = rx_id;
-    this.tr    = tr;
-  endfunction
+// Class expected_item.sv. The expected_item class is responsible for
+// pairing a reference transaction with the terminal that must receive it.
+class expected_item #(parameter int width = 16, parameter int drvs = 4);
+
+    int rx_id;
+    transaction #(width, drvs) tr;
+    // Set by the checker when a newer packet of the same source reached
+    // this receiver first
+    bit overtaken;
+
+    function new(
+        int rx_id,
+        transaction #(width, drvs) tr
+    );
+        this.rx_id = rx_id;
+        this.tr = tr;
+        this.overtaken = 0;
+    endfunction
+
 endclass
 
+// Class bus_scoreboard.sv. The bus_scoreboard class is responsible for the
+// reference model of the bus: for every transaction it computes which
+// terminals must receive it and sends one expectation per receiver to the
+// checker.
 class bus_scoreboard #(parameter int width = 16, parameter int drvs = 4);
-  localparam bit [7:0] BCAST_ID = 8'hFF;
-  typedef enum {DST_UNICAST, DST_BCAST, DST_INVALID} dst_kind_e;
 
-  mailbox #(transaction #(width))  agnt_sb_mbx;
-  mailbox #(expected_item #(width)) sb_chkr_mbx;
+    localparam bit [7:0] BCAST_ID = 8'hFF;
+    typedef enum {DST_UNICAST, DST_BCAST, DST_INVALID, DST_SELF} dst_kind_e;
 
-  int n_unicast, n_bcast, n_invalid, n_expected;
+    mailbox #(transaction #(width, drvs)) agent_sb_mbx;
+    mailbox #(expected_item #(width, drvs)) sb_chk_mbx;
 
-  function new(mailbox #(transaction #(width)) agnt_sb_mbx, mailbox #(expected_item #(width)) sb_chkr_mbx);
-    this.agnt_sb_mbx = agnt_sb_mbx;
-    this.sb_chkr_mbx = sb_chkr_mbx;
-  endfunction
+    int n_unicast;
+    int n_bcast;
+    int n_invalid;
+    int n_self;
+    int n_expected;
 
-  function dst_kind_e classify(bit [7:0] dst);
-    if (dst == BCAST_ID) return DST_BCAST;
-    if (dst < drvs)      return DST_UNICAST;
-    return DST_INVALID;
-  endfunction
+    function new(
+        mailbox #(transaction #(width, drvs)) agent_sb_mbx,
+        mailbox #(expected_item #(width, drvs)) sb_chk_mbx
+    );
+        this.agent_sb_mbx = agent_sb_mbx;
+        this.sb_chk_mbx = sb_chk_mbx;
+    endfunction
 
-  task add_expected(int rx_id, transaction #(width) tr);
-    expected_item #(width) e = new(rx_id, tr);
-    sb_chkr_mbx.put(e);
-    n_expected++;
-  endtask
+    function dst_kind_e classify(transaction #(width, drvs) tr);
+        if (tr.dst_addr == BCAST_ID) return DST_BCAST;
+        if (tr.dst_addr >= drvs) return DST_INVALID;
+        // The sender holds the bus, so it never reads its own packet
+        if (tr.dst_addr == tr.src_terminal) return DST_SELF;
+        return DST_UNICAST;
+    endfunction
 
-  task run();
-    transaction #(width) tr;
-    forever begin
-      agnt_sb_mbx.get(tr);
-      case (classify(tr.dst_addr)) // Adaptado a la nomenclatura unificada
-        DST_UNICAST: begin add_expected(tr.dst_addr, tr); n_unicast++; end
-        DST_BCAST: begin
-          for (int d = 0; d < drvs; d++)
-            if (d != tr.src_terminal) add_expected(d, tr);
-          n_bcast++;
+    function void add_expected(int rx_id, transaction #(width, drvs) tr);
+        expected_item #(width, drvs) e = new(rx_id, tr);
+        void'(sb_chk_mbx.try_put(e));
+        n_expected++;
+    endfunction
+
+    task run();
+        transaction #(width, drvs) tr;
+        forever begin
+            agent_sb_mbx.get(tr);
+            case (classify(tr))
+                DST_UNICAST: begin
+                    add_expected(tr.dst_addr, tr);
+                    n_unicast++;
+                end
+                DST_BCAST: begin
+                    for (int d = 0; d < drvs; d++) begin
+                        if (d != tr.src_terminal) add_expected(d, tr);
+                    end
+                    n_bcast++;
+                end
+                DST_INVALID: n_invalid++;
+                DST_SELF: n_self++;
+            endcase
         end
-        DST_INVALID: begin n_invalid++; end
-      endcase
-    end
-  endtask
+    endtask
 
-  function void report();
-    $display("[SB] unicast=%0d bcast=%0d invalid=%0d expected=%0d",
-             n_unicast, n_bcast, n_invalid, n_expected);
-  endfunction
+    function void report();
+        $display("[SB] unicast=%0d bcast=%0d invalid=%0d self=%0d expected_receptions=%0d",
+                 n_unicast, n_bcast, n_invalid, n_self, n_expected);
+    endfunction
+
 endclass

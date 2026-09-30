@@ -1,70 +1,30 @@
-
+// Class bus_agent.sv. The bus_agent class is responsible for receiving the
+// transactions from the generator and splitting them: one copy of the handle
+// goes to the driver to be executed and one to the scoreboard as reference.
 class bus_agent #(parameter int width = 16, parameter int drvs = 4);
 
-    // --------------------------------------------------------
-    // 1. Buzones de comunicación (Mailboxes)
-    // --------------------------------------------------------
-    mailbox mbx_gen_agent;    // Buzón de entrada: Recibe del Generador
-    mailbox mbx_agent_driver; // Buzón de salida 1: Envía al Driver
-    mailbox mbx_agent_sb;     // Buzón de salida 2: Envía al Scoreboard
+    mailbox #(transaction #(width, drvs)) gen_agent_mbx;
+    mailbox #(transaction #(width, drvs)) agent_drv_mbx;
+    mailbox #(transaction #(width, drvs)) agent_sb_mbx;
 
-    // --------------------------------------------------------
-    // 2. Componentes internos
-    // --------------------------------------------------------
-    // El Agente es el dueño del Driver, por lo que lo instancia aquí
-    bus_driver #(width, drvs) driver;
-
-    // Interfaz virtual para pasársela al Driver
-    virtual dut_compl_if.DRV vif;
-
-    // --------------------------------------------------------
-    // 3. Constructor
-    // --------------------------------------------------------
-    // El ambiente superior (env) le pasará el buzón del generador, el del scoreboard y la interfaz
-    function new(mailbox mbx_gen, mailbox mbx_sb, virtual dut_compl_if.DRV vif_in);
-        this.mbx_gen_agent = mbx_gen;
-        this.mbx_agent_sb  = mbx_sb;
-        this.vif = vif_in;
-
-        // Inicializamos el buzón interno que conectará al Agente con su Driver
-        this.mbx_agent_driver = new();
-
-        // Construimos el Driver entregándole su buzón y la interfaz física
-        this.driver = new(mbx_agent_driver, vif);
+    function new(
+        mailbox #(transaction #(width, drvs)) gen_agent_mbx,
+        mailbox #(transaction #(width, drvs)) agent_drv_mbx,
+        mailbox #(transaction #(width, drvs)) agent_sb_mbx
+    );
+        this.gen_agent_mbx = gen_agent_mbx;
+        this.agent_drv_mbx = agent_drv_mbx;
+        this.agent_sb_mbx = agent_sb_mbx;
     endfunction
 
-    // --------------------------------------------------------
-    // 4. Tarea Principal (Motor de enrutamiento)
-    // --------------------------------------------------------
     task run();
-        transaction #(width) pkt;
-        transaction #(width) pkt_copia;
-
-        // Encendemos el Driver en un hilo paralelo (background) para que 
-        // empiece a escuchar su buzón inmediatamente
-        fork
-            driver.run();
-        join_none
-
-        $display("[AGENTE] Iniciando enrutamiento de paquetes...");
-
-        // Ciclo infinito: El Agente siempre está esperando paquetes nuevos
+        transaction #(width, drvs) pkt;
         forever begin
-            // A. Recibir del generador (Se queda pausado aquí hasta que llegue algo)
-            mbx_gen_agent.get(pkt);
-
-            // B. Crear una copia profunda (clon) para el Scoreboard.
-            // Esto es vital: si el Driver modifica el tiempo de envío del paquete original,
-            // no queremos alterar los datos que el Scoreboard usará para comparar.
-            pkt_copia = new pkt; 
-
-            // C. Enviar al Driver para su inyección física
-            mbx_agent_driver.put(pkt);
-
-            // D. Enviar la copia al Scoreboard para la verificación posterior
-            mbx_agent_sb.put(pkt_copia);
-
-            $display("[AGENTE] Paquete enrutado -> Driver & Scoreboard (Destino: %0d)", pkt.dst_addr);
+            gen_agent_mbx.get(pkt);
+            // Both receive the same handle: the driver writes sent_time on it
+            // and the checker reads it through the scoreboard expectation
+            agent_drv_mbx.put(pkt);
+            agent_sb_mbx.put(pkt);
         end
     endtask
 

@@ -1,49 +1,33 @@
+// Class generator.sv. The generator class is responsible for creating the
+// randomized transactions of a test and sending them to the agent.
+class generator #(parameter int width = 16, parameter int drvs = 4);
 
-
-class generator #(parameter int width = 16);
-
-    // The mailbox that will connect to the subsequent layers is declared
-    mailbox mbx;
-    // Number of transactions to generate in the test
+    mailbox #(transaction #(width, drvs)) gen_agent_mbx;
     int num_transactions;
+    // Set when every transaction has been handed to the agent
+    bit done;
 
-    // Everything has finished generating.
-    event gen_completed;
-
-
-    // Constructor is created
-    function new(mailbox mbx_in, int num_tx);
-        this.mbx = mbx_in;
-        this.num_transactions = num_tx;
+    function new(
+        mailbox #(transaction #(width, drvs)) gen_agent_mbx,
+        int num_transactions
+    );
+        this.gen_agent_mbx = gen_agent_mbx;
+        this.num_transactions = num_transactions;
+        this.done = 0;
     endfunction
 
-    // Main generation task
     task run();
-      // Package handler
-        transaction #(width) pkt;
-
-        $display("[GENERATOR] Creacion de %0d transacciones: ", num_transactions);        
+        transaction #(width, drvs) pkt;
+        $display("[GEN] Creating %0d transactions", num_transactions);
         for (int i = 0; i < num_transactions; i++) begin
-          // The new package is instantiated in each iteration
             pkt = new();
-
-            // Randomization is performed by applying the constraints.
             if (!pkt.randomize()) begin
-                $fatal("Error: Fallo en la aleatorizacion en el generador");
+                $fatal(1, "[GEN] Randomization failed on transaction %0d", i);
             end
-
-            // A random origin is assigned
-            pkt.src_terminal = $urandom_range(0, 3);
-
-            // Send to mailbox
-            mbx.put(pkt);
-
-
-            $display("[GENERATOR] Paquete %0d enviado al mailbox (Source: %0d)", i, pkt.src_terminal);
+            gen_agent_mbx.put(pkt);
+            pkt.print($sformatf("GEN %0d", i));
         end
-
-        // Notify the environment that generation is complete
-        -> gen_completed;
+        done = 1;
     endtask
 
 endclass

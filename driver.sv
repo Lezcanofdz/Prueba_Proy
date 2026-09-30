@@ -1,67 +1,132 @@
-class fifo_emulator #(parameter int width = 16, parameter int id = 0);
-    virtual dut_compl_if.DRV vif;
-    transaction #(width) pkt_queue[$]; 
+// Class fifo_emulator.sv. The fifo_emulator class is responsible for
+// emulating the output FIFO of one terminal. It behaves as a first-word
+// fall-through FIFO: while it holds data, pndng is high and D_pop already
+// shows the head packet, because the DUT loads D_pop before asserting pop.
+class fifo_emulator #(parameter int width = 16, parameter int drvs = 4);
 
-    function new(virtual dut_compl_if.DRV vif_in);
-        this.vif = vif_in;
+    virtual dut_compl_if #(width, drvs) vif;
+    mailbox #(transaction #(width, drvs)) parent_child_mbx;
+    transaction #(width, drvs) pkt_queue[$];
+    int id;
+    int n_sent;
+    // 1 while feed() holds a packet during its delay (it is in neither the
+    // mailbox nor the queue, but it has not been sent yet)
+    bit in_delay;
+
+    function new(
+        int id,
+        virtual dut_compl_if #(width, drvs) vif,
+        mailbox #(transaction #(width, drvs)) parent_child_mbx
+    );
+        this.id = id;
+        this.vif = vif;
+        this.parent_child_mbx = parent_child_mbx;
+        this.n_sent = 0;
+        this.in_delay = 0;
+    endfunction
+
+    // Puts the FIFO outputs in a known idle state (used during reset)
+    function void drive_idle();
+        vif.pndng[0][id] = 1'b0;
+        vif.D_pop[0][id] = '0;
+    endfunction
+
+    // True when there is nothing left to hand to the DUT
+    function bit is_empty();
+        return (pkt_queue.size() == 0) && (parent_child_mbx.num() == 0) && !in_delay;
     endfunction
 
     task run();
-        transaction #(width) current_pkt;
+        fork
+            feed();
+            drive();
+        join_none
+    endtask
+
+    // Moves packets from the parent into the FIFO, waiting each packet's
+    // delay first, so the delay is the gap between messages of this terminal
+    task feed();
+        transaction #(width, drvs) pkt;
+        forever begin
+            parent_child_mbx.get(pkt);
+            in_delay = 1;
+            repeat (pkt.delay) @(vif.cb_drv);
+            pkt_queue.push_back(pkt);
+            in_delay = 0;
+        end
+    endtask
+
+    // Serves the DUT: first consumes a pop, then presents the new head
+    task drive();
+        transaction #(width, drvs) current_pkt;
         forever begin
             @(vif.cb_drv);
+            if (vif.cb_drv.pop[0][id] === 1'b1) begin
+                if (pkt_queue.size() > 0) begin
+                    current_pkt = pkt_queue.pop_front();
+                    current_pkt.sent_time = $realtime;
+                    n_sent++;
+                end else begin
+                    $error("[DRV-%0d] pop received with an empty FIFO at %0t", id, $realtime);
+                end
+            end
             if (pkt_queue.size() > 0) begin
                 vif.cb_drv.pndng[0][id] <= 1'b1;
                 vif.cb_drv.D_pop[0][id] <= pkt_queue[0].pack();
-
-                if (vif.cb_drv.pop[0][id] === 1'b1) begin
-                    current_pkt = pkt_queue.pop_front();
-                    current_pkt.sent_time = $realtime;
-                    $display("[FIFO-%0d] Pkt inyectado al tiempo %0t", id, current_pkt.sent_time);
-                end
             end else begin
                 vif.cb_drv.pndng[0][id] <= 1'b0;
                 vif.cb_drv.D_pop[0][id] <= '0;
             end
         end
     endtask
+
 endclass
 
+// Class bus_driver.sv. The bus_driver class is responsible for receiving the
+// transactions from the agent and routing each one to the fifo_emulator of
+// its source terminal. Every child runs in its own process.
 class bus_driver #(parameter int width = 16, parameter int drvs = 4);
-    mailbox mbx_agent_driver;
-    virtual dut_compl_if.DRV vif;
-    
-    fifo_emulator #(width, 0) hijo_0;
-    fifo_emulator #(width, 1) hijo_1;
-    fifo_emulator #(width, 2) hijo_2;
-    fifo_emulator #(width, 3) hijo_3;
 
-    function new(mailbox mbx, virtual dut_compl_if.DRV vif_in);
-        this.mbx_agent_driver = mbx;
-        this.vif = vif_in;
-        hijo_0 = new(vif); hijo_1 = new(vif); hijo_2 = new(vif); hijo_3 = new(vif);
+    virtual dut_compl_if #(width, drvs) vif;
+    mailbox #(transaction #(width, drvs)) agent_drv_mbx;
+    mailbox #(transaction #(width, drvs)) parent_child_mbx[drvs];
+    fifo_emulator #(width, drvs) children[drvs];
+
+    function new(
+        virtual dut_compl_if #(width, drvs) vif,
+        mailbox #(transaction #(width, drvs)) agent_drv_mbx
+    );
+        this.vif = vif;
+        this.agent_drv_mbx = agent_drv_mbx;
+        for (int i = 0; i < drvs; i++) begin
+            parent_child_mbx[i] = new();
+            children[i] = new(i, vif, parent_child_mbx[i]);
+        end
+    endfunction
+
+    function void drive_idle();
+        foreach (children[i]) children[i].drive_idle();
+    endfunction
+
+    // True when every child FIFO has handed all its packets to the DUT
+    function bit is_empty();
+        foreach (children[i]) begin
+            if (!children[i].is_empty()) return 0;
+        end
+        return (agent_drv_mbx.num() == 0);
     endfunction
 
     task run();
-        fork
-            hijo_0.run(); hijo_1.run(); hijo_2.run(); hijo_3.run();
-        join_none
-
+        transaction #(width, drvs) pkt;
+        foreach (children[i]) children[i].run();
         forever begin
-            transaction #(width) pkt;
-            mbx_agent_driver.get(pkt);
-            fork
-                automatic transaction #(width) p = pkt;
-                begin
-                    repeat(p.delay) @(vif.cb_drv);
-                    case (p.src_terminal)
-                        0: hijo_0.pkt_queue.push_back(p);
-                        1: hijo_1.pkt_queue.push_back(p);
-                        2: hijo_2.pkt_queue.push_back(p);
-                        3: hijo_3.pkt_queue.push_back(p);
-                    endcase
-                end
-            join_none
+            agent_drv_mbx.get(pkt);
+            if (pkt.src_terminal >= drvs) begin
+                $error("[DRV] Invalid source terminal %0d, packet dropped", pkt.src_terminal);
+            end else begin
+                parent_child_mbx[pkt.src_terminal].put(pkt);
+            end
         end
     endtask
-endclas
+
+endclass

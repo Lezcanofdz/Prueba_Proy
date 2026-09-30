@@ -1,42 +1,48 @@
+`timescale 1ns/1ps
 
-// 1. Inclusión de archivos (El orden es crucial para que el compilador entienda las jerarquías)
+// DUT sources. Library.sv includes "../FIFO_Latches/fifo.sv" unless FIFOS
+// is defined, so fifo.sv is included here and the macro set beforehand.
+`ifndef FIFOS
+    `define FIFOS
+    `include "fifo.sv"
+`endif
+`include "Library.sv"
+
+// Environment sources, in dependency order
 `include "interface.sv"
 `include "transaction.sv"
 `include "generator.sv"
-`include "driver.sv"
 `include "agent.sv"
+`include "driver.sv"
 `include "monitor.sv"
 `include "scoreboard.sv"
 `include "checker.sv"
-
 `include "env.sv"
 `include "test.sv"
 
+// Module testbench. The testbench module is responsible for the clock, the
+// reset, the DUT, the interface and for launching the test.
 module testbench;
 
-    // 2. Parámetros de la prueba base (16 bits, 4 dispositivos)
+    // Packet width (16, 32 or 64) and number of terminals
     parameter int p_width = 16;
-    parameter int p_drvs  = 4;
-    parameter int p_bits  = 1;
+    parameter int p_drvs = 4;
 
-    // 3. Generación del Reloj Físico
     logic clk;
+    bus_test #(p_width, p_drvs) test;
+
     initial begin
         clk = 0;
-        // Cambia de estado cada 5 unidades de tiempo (Periodo de 10)
-        forever #5 clk = ~clk; 
+        forever #5 clk = ~clk;
     end
 
-    // 4. Instanciación de la Interfaz Física
-    // Se conecta únicamente el reloj. El reset es interno a la interfaz, 
-    // tal como lo definió tu compañero.
-    dut_compl_if #(p_width, p_drvs, p_bits) vif (
+    // bits = 1: one bus (it is the number of buses, not the data width)
+    dut_compl_if #(p_width, p_drvs, 1) vif (
         .clk(clk)
     );
 
-    // 5. Instanciación del Diseño Bajo Prueba (RTL del profesor)
     bs_gnrtr_n_rbtr #(
-        .bits(p_bits),
+        .bits(1),
         .drvrs(p_drvs),
         .pckg_sz(p_width)
     ) dut (
@@ -49,30 +55,29 @@ module testbench;
         .D_push(vif.D_push)
     );
 
-    // 6. Declaración del bloque de Test de Software
-    bus_test #(p_width, p_drvs) test;
-
-    // 7. Bloque de Ejecución Principal
     initial begin
-        // Configuración VCD: Indispensable para ver gráficas en EPWave (EDA Playground)
-        $dumpfile("dump.vcd");
-        $dumpvars(0, testbench);
+        if (!(p_width inside {16, 32, 64})) begin
+            $fatal(1, "[TOP] p_width must be 16, 32 or 64 (got %0d)", p_width);
+        end
+        if ($test$plusargs("DUMP")) begin
+            $dumpfile("dump.vcd");
+            $dumpvars(0, testbench);
+        end
 
-        // A. Secuencia de Reset Física
-        $display("[TOP] Aplicando reset de hardware al bus...");
-        vif.reset = 1;
-        #20; // Esperamos 20 unidades de tiempo
-        vif.reset = 0;
-        $display("[TOP] Reset liberado. Arrancando software de verificacion...");
-
-        // B. Construcción del Test
-        // Le inyectamos la interfaz física virtualizada al mundo del software
+        // The env is built at time 0 so the FIFOs are idle during reset.
+        // Reset starts at 0 and rises at 1ns: the DUT flops reset on
+        // "posedge reset", and a 1 written at time 0 can be missed depending
+        // on which process the simulator starts first.
+        vif.reset = 1'b0;
         test = new(vif);
-        
-        // C. Ejecución (Esto arranca el Env -> Agente -> Driver/Generator)
-        test.run();
+        fork
+            test.run();
+        join_none
+        #1 vif.reset = 1'b1;
+        repeat (5) @(posedge clk);
+        vif.reset = 1'b0;
 
-        // D. Cierre del simulador
+        wait fork;
         $finish;
     end
 
