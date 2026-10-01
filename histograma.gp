@@ -9,8 +9,10 @@ if (!exists("outfile")) outfile = csvfile[1:strlen(csvfile)-4] . "_histograma.pn
 # que ser multiplo de este valor, si no las barras quedan desalineadas con
 # los datos reales y el histograma se ve con huecos raros.
 if (!exists("resolution")) resolution = 10
-# Si no se pide una cantidad de bins puntual, se usa un bin por cada valor de
-# retardo posible (lo mas fino que tiene sentido para datos ya cuantizados).
+# Cantidad de barras objetivo. Pocas barras => barras gruesas y casi pegadas
+# (look clasico de histograma). El ancho resultante siempre se redondea al
+# multiplo de "resolution" mas cercano para que las barras queden alineadas
+# con los valores de retardo reales.
 if (!exists("nbins")) nbins = 5
 
 set datafile separator ","
@@ -22,14 +24,12 @@ d_min = STATS_min
 d_max = STATS_max
 d_mean = STATS_mean
 
-
 raw_width = (d_max - d_min) / nbins
 bin_width = ceil(raw_width / resolution) * resolution
 if (bin_width <= 0) bin_width = resolution
 nbins_real = floor((d_max - d_min) / bin_width) + 1
 idx(x) = floor((x - d_min) / bin_width)
 bin(x) = bin_width * (idx(x) < nbins_real ? idx(x) : nbins_real - 1) + d_min + bin_width / 2.0
-
 
 set terminal pngcairo size 1000,600 font "Sans,11"
 set output outfile
@@ -39,8 +39,8 @@ set xlabel "Retardo (ns)"
 set ylabel "Cantidad de paquetes"
 set grid ytics
 set key off
-set boxwidth bin_width * 0.9
-set style fill solid 0.7 border -1
+set boxwidth bin_width * 0.98
+set style fill solid 0.8 border -1
 set xrange [d_min - bin_width : d_max + bin_width]
 set offsets 0, 0, 1, 0
 set yrange [0:*]
