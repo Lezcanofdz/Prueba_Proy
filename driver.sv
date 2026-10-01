@@ -1,7 +1,4 @@
-// Class fifo_emulator.sv. The fifo_emulator class is responsible for
-// emulating the output FIFO of one terminal. It behaves as a first-word
-// fall-through FIFO: while it holds data, pndng is high and D_pop already
-// shows the head packet, because the DUT loads D_pop before asserting pop.
+// Class fifo_emulator.sv. The fifo_emulator class is responsible for emulating the output FIFO of one terminal.
 class fifo_emulator #(parameter int width = 16, parameter int drvs = 4);
 
     virtual dut_compl_if #(width, drvs) vif;
@@ -9,8 +6,7 @@ class fifo_emulator #(parameter int width = 16, parameter int drvs = 4);
     transaction #(width, drvs) pkt_queue[$];
     int id;
     int n_sent;
-    // 1 while feed() holds a packet during its delay (it is in neither the
-    // mailbox nor the queue, but it has not been sent yet)
+    // 1 while feed() holds a packet during its delay (it is in neither the mailbox nor the queue, but it has not been sent yet)
     bit in_delay;
 
     function new(
@@ -43,8 +39,7 @@ class fifo_emulator #(parameter int width = 16, parameter int drvs = 4);
         join_none
     endtask
 
-    // Moves packets from the parent into the FIFO, waiting each packet's
-    // delay first, so the delay is the gap between messages of this terminal
+    // Moves packets from the parent into the FIFO, waiting each packet's delay first, so the delay is the gap between messages of this terminal
     task feed();
         transaction #(width, drvs) pkt;
         forever begin
@@ -82,9 +77,7 @@ class fifo_emulator #(parameter int width = 16, parameter int drvs = 4);
 
 endclass
 
-// Class bus_driver.sv. The bus_driver class is responsible for receiving the
-// transactions from the agent and routing each one to the fifo_emulator of
-// its source terminal. Every child runs in its own process.
+// Class bus_driver.sv. The bus_driver class is responsible for receiving the transactions from the agent and routing each one to the fifo_emulator of its source terminal. Every child runs in its own process.
 class bus_driver #(parameter int width = 16, parameter int drvs = 4);
 
     virtual dut_compl_if #(width, drvs) vif;

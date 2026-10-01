@@ -1,8 +1,4 @@
-// Interface dut_compl_if. The dut_compl_if interface is responsible for
-// bundling every signal of the bs_gnrtr_n_rbtr DUT and for providing the
-// clocking blocks used by the driver (cb_drv) and the monitor (cb_mon).
-// Note: "bits" is the number of independent buses of the DUT, not the data
-// width. This environment drives a single bus, so bits must stay at 1.
+// Interface dut_compl_if. The dut_compl_if interface is responsible for bundling every signal of the bs_gnrtr_n_rbtr DUT and for providing the clocking blocks used by the driver (cb_drv) and the monitor (cb_mon).
 interface dut_compl_if #(
     parameter int width = 16,
     parameter int drvs = 4,

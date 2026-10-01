@@ -1,6 +1,4 @@
-// Class bus_agent.sv. The bus_agent class is responsible for receiving the
-// transactions from the generator and splitting them: one copy of the handle
-// goes to the driver to be executed and one to the scoreboard as reference.
+// Class bus_agent.sv. The bus_agent class is responsible for receiving the transactions from the generator and splitting them: one copy of the handle goes to the driver to be executed and one to the scoreboard as reference.
 class bus_agent #(parameter int width = 16, parameter int drvs = 4);
 
     mailbox #(transaction #(width, drvs)) gen_agent_mbx;
@@ -21,8 +19,7 @@ class bus_agent #(parameter int width = 16, parameter int drvs = 4);
         transaction #(width, drvs) pkt;
         forever begin
             gen_agent_mbx.get(pkt);
-            // Both receive the same handle: the driver writes sent_time on it
-            // and the checker reads it through the scoreboard expectation
+            // Both receive the same handle: the driver writes sent_time on it and the checker reads it through the scoreboard expectation
             agent_drv_mbx.put(pkt);
             agent_sb_mbx.put(pkt);
         end

@@ -1,7 +1,6 @@
 `timescale 1ns/1ps
 
-// DUT sources. Library.sv includes "../FIFO_Latches/fifo.sv" unless FIFOS
-// is defined, so fifo.sv is included here and the macro set beforehand.
+// DUT sources. Library.sv includes "../FIFO_Latches/fifo.sv" unless FIFOS is defined, so fifo.sv is included here and the macro set beforehand.
 `ifndef FIFOS
     `define FIFOS
     `include "fifo.sv"
@@ -20,13 +19,14 @@
 `include "env.sv"
 `include "test.sv"
 
-// Module testbench. The testbench module is responsible for the clock, the
-// reset, the DUT, the interface and for launching the test.
+// Module testbench. The testbench module is responsible for the clock, the reset, the DUT, the interface and for launching the test.
 module testbench;
 
     // Packet width (16, 32 or 64) and number of terminals
     parameter int p_width = 16;
     parameter int p_drvs = 4;
+    // Broadcast ID given to the DUT and to the environment. The RTL compares against 8'hFF internally, so any other value is expected to fail
+    parameter bit [7:0] p_bcast = 8'hFF;
 
     logic clk;
     bus_test #(p_width, p_drvs) test;
@@ -44,7 +44,8 @@ module testbench;
     bs_gnrtr_n_rbtr #(
         .bits(1),
         .drvrs(p_drvs),
-        .pckg_sz(p_width)
+        .pckg_sz(p_width),
+        .broadcast(p_bcast)
     ) dut (
         .clk(clk),
         .reset(vif.reset),
@@ -59,17 +60,18 @@ module testbench;
         if (!(p_width inside {16, 32, 64})) begin
             $fatal(1, "[TOP] p_width debe ser 16, 32 o 64 (se recibio %0d)", p_width);
         end
+        if (p_bcast < p_drvs) begin
+            $fatal(1, "[TOP] p_bcast no puede ser la direccion de una terminal (se recibio %0d)", p_bcast);
+        end
         if ($test$plusargs("DUMP")) begin
             $dumpfile("dump.vcd");
             $dumpvars(0, testbench);
         end
 
         // The env is built at time 0 so the FIFOs are idle during reset.
-        // Reset starts at 0 and rises at 1ns: the DUT flops reset on
-        // "posedge reset", and a 1 written at time 0 can be missed depending
-        // on which process the simulator starts first.
+        // Reset starts at 0 and rises at 1ns: the DUT flops reset on "posedge reset", and a 1 written at time 0 can be missed depending on which process the simulator starts first.
         vif.reset = 1'b0;
-        test = new(vif);
+        test = new(vif, p_bcast);
         fork
             test.run();
         join_none

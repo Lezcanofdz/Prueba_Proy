@@ -1,7 +1,4 @@
-// Class bus_env.sv. The bus_env class is responsible for building every
-// unit of the verification environment, connecting them with mailboxes,
-// starting each one in its own process and deciding when the traffic has
-// been drained so the results can be reported.
+// Class bus_env.sv. The bus_env class is responsible for creating all the verification components, connecting them through mailboxes and running the simulation until the report is printed.
 class bus_env #(parameter int width = 16, parameter int drvs = 4);
 
     virtual dut_compl_if #(width, drvs) vif;
@@ -19,11 +16,13 @@ class bus_env #(parameter int width = 16, parameter int drvs = 4);
     mailbox #(transaction #(width, drvs)) mon_chk_mbx;
     mailbox #(expected_item #(width, drvs)) sb_chk_mbx;
 
-    // Cycles allowed for the DUT to pop every packet (the bus is shared,
-    // so packets are serialized one after another)
+    // Cycles allowed for the DUT to pop every packet (the bus is shared, so packets are serialized one after another)
     int pop_timeout;
+
     // Cycles to wait for the expected packets after the FIFOs are empty
     int drain_timeout;
+    // Name of the CSV report (set by the test)
+    string csv_name;
 
     function new(
         virtual dut_compl_if #(width, drvs) vif,
@@ -44,10 +43,8 @@ class bus_env #(parameter int width = 16, parameter int drvs = 4);
         sb = new(agent_sb_mbx, sb_chk_mbx);
         chk = new(sb_chk_mbx, mon_chk_mbx);
 
-        // One packet uses roughly width cycles of serialization plus a few
-        // of protocol; allow a full arbitration round per packet
-        pop_timeout = 4 * num_tx * (width + 16) + 1000;
         drain_timeout = 4 * drvs * (width + 16) + 1000;
+        csv_name = "reporte_retardos.csv";
     endfunction
 
     task run();
@@ -68,6 +65,8 @@ class bus_env #(parameter int width = 16, parameter int drvs = 4);
 
         // 1. Every transaction generated and handed to the DUT
         wait (gen.done);
+        // The total is known only now. One packet uses approximately width cycles of serialization plus a few of protocol; allow a full arbitration round per packet, plus the delays of the busiest terminal
+        pop_timeout = 4 * gen.total_tx * (width + 16) + gen.total_tx * gen.max_delay + 1000;
         cycles = 0;
         while ((!drv.is_empty() || gen_agent_mbx.num() != 0) && cycles < pop_timeout) begin
             @(vif.cb_mon);
@@ -94,7 +93,7 @@ class bus_env #(parameter int width = 16, parameter int drvs = 4);
 
         sb.report();
         chk.report();
-        chk.write_csv();
+        chk.write_csv(csv_name);
     endtask
 
 endclass

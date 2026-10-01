@@ -1,6 +1,4 @@
-// Class mon_child.sv. The mon_child class is responsible for watching one
-// terminal of the DUT: every cycle with push high it captures D_push and
-// timestamps it as a received packet.
+// Class mon_child.sv. The mon_child class is responsible for watching one terminal of the DUT: every cycle with push high it captures D_push and timestamps it as a received packet.
 class mon_child #(parameter int width = 16, parameter int drvs = 4);
 
     virtual dut_compl_if #(width, drvs) vif;
@@ -33,9 +31,7 @@ class mon_child #(parameter int width = 16, parameter int drvs = 4);
 
 endclass
 
-// Class bus_monitor.sv. The bus_monitor class is responsible for starting
-// one mon_child per terminal and forwarding everything they observe to the
-// checker.
+// Class bus_monitor.sv. The bus_monitor class is responsible for starting one mon_child per terminal and forwarding everything they observe to the checker.
 class bus_monitor #(parameter int width = 16, parameter int drvs = 4);
 
     virtual dut_compl_if #(width, drvs) vif;

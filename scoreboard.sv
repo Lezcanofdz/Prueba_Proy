@@ -1,5 +1,4 @@
-// Class expected_item.sv. The expected_item class is responsible for
-// pairing a reference transaction with the terminal that must receive it.
+// Class expected_item.sv. The expected_item class is responsible for pairing a reference transaction with the terminal that must receive it.
 class expected_item #(parameter int width = 16, parameter int drvs = 4);
 
     int rx_id;
@@ -19,17 +18,15 @@ class expected_item #(parameter int width = 16, parameter int drvs = 4);
 
 endclass
 
-// Class bus_scoreboard.sv. The bus_scoreboard class is responsible for the
-// reference model of the bus: for every transaction it computes which
-// terminals must receive it and sends one expectation per receiver to the
-// checker.
+// Class bus_scoreboard.sv. The bus_scoreboard class is responsible for the reference model of the bus: for every transaction it computes which terminals must receive it and sends one expectation per receiver to the checker.
 class bus_scoreboard #(parameter int width = 16, parameter int drvs = 4);
 
-    localparam bit [7:0] BCAST_ID = 8'hFF;
     typedef enum {DST_UNICAST, DST_BCAST, DST_INVALID, DST_SELF} dst_kind_e;
 
     mailbox #(transaction #(width, drvs)) agent_sb_mbx;
     mailbox #(expected_item #(width, drvs)) sb_chk_mbx;
+    // Address treated as broadcast by the reference model (set by the test)
+    bit [7:0] bcast_id;
 
     int n_unicast;
     int n_bcast;
@@ -43,12 +40,13 @@ class bus_scoreboard #(parameter int width = 16, parameter int drvs = 4);
     );
         this.agent_sb_mbx = agent_sb_mbx;
         this.sb_chk_mbx = sb_chk_mbx;
+        this.bcast_id = 8'hFF;
     endfunction
 
     function dst_kind_e classify(transaction #(width, drvs) tr);
-        if (tr.dst_addr == BCAST_ID) return DST_BCAST;
+        if (tr.dst_addr == bcast_id) return DST_BCAST;
         if (tr.dst_addr >= drvs) return DST_INVALID;
-        // The sender holds the bus, so it never reads its own packet
+        // The sender holds the bus, so it never reads its own packet.
         if (tr.dst_addr == tr.src_terminal) return DST_SELF;
         return DST_UNICAST;
     endfunction
