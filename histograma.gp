@@ -1,5 +1,5 @@
 # histograma.gp
-# Histogram of the packet delays stored in the csv report written by the checker.
+# Histogram of thee packet delays stored in the csv report written by the checker.
 # Usage: gnuplot -e "csvfile='reporte_base_w16_seed5.csv'" histograma.gp
 
 if (!exists("csvfile")) csvfile = "reporte.csv"
@@ -14,6 +14,7 @@ n_packets = STATS_records
 d_min = STATS_min
 d_max = STATS_max
 d_mean = STATS_mean
+
 
 bin_width = (d_max - d_min) / nbins
 if (bin_width <= 0) bin_width = 10
