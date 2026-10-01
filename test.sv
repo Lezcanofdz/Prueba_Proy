@@ -8,7 +8,8 @@ class bus_test #(parameter int width = 16, parameter int drvs = 4);
     int seed;
 
     function new(
-        virtual dut_compl_if #(width, drvs, 16) vif_in
+        virtual dut_compl_if #(width, drvs) vif_in,
+        bit [7:0] bcast_id = 8'hFF
     );
         this.test_name = "base";
         this.num_transacciones = 50;
@@ -16,6 +17,11 @@ class bus_test #(parameter int width = 16, parameter int drvs = 4);
         if (!$value$plusargs("ntb_random_seed=%d", seed)) seed = 0;
 
         this.env = new(vif_in, num_transacciones);
+        // The RTL (testbench.sv) was built with this broadcast id; the
+        // generator and the scoreboard need the same value to classify
+        // packets the same way the DUT does.
+        this.env.gen.bcast_id = bcast_id;
+        this.env.sb.bcast_id  = bcast_id;
         this.env.csv_name = $sformatf("reporte_%s_w%0d_seed%0d.csv", test_name, width, seed);
     endfunction
 

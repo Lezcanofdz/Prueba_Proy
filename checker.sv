@@ -10,32 +10,32 @@ endclass
 
 // Class bus_checker.sv. The bus_checker class is responsible for comparing the packets observed by the monitor against the packets expected by the scoreboard, reporting unexpected, out of order and missing packets, and writing the delay of each delivered packet to a csv file.
 class bus_checker #(parameter int width = 16, parameter int drvs = 4);
-  mailbox #(expected_item #(width)) sb_chkr_mbx;
-  mailbox #(transaction #(width)) mon_chkr_mbx;
+  mailbox #(expected_item #(width, drvs)) sb_chkr_mbx;
+  mailbox #(transaction #(width, drvs)) mon_chkr_mbx;
 
-  expected_item #(width) pending[drvs][$];
+  expected_item #(width, drvs) pending[drvs][$];
   chk_result results[$];
 
   int n_ok, n_unexpected, n_order, n_missing;
   real sum_delay, min_delay, max_delay;
 
   function new(
-    mailbox #(expected_item #(width)) sb_chkr_mbx,
-    mailbox #(transaction #(width)) mon_chkr_mbx
+    mailbox #(expected_item #(width, drvs)) sb_chkr_mbx,
+    mailbox #(transaction #(width, drvs)) mon_chkr_mbx
   );
     this.sb_chkr_mbx = sb_chkr_mbx;
     this.mon_chkr_mbx = mon_chkr_mbx;
   endfunction
 
   function void pull_expected();
-    expected_item #(width) e;
+    expected_item #(width, drvs) e;
     while (sb_chkr_mbx.try_get(e)) begin
       pending[e.rx_id].push_back(e);
     end
   endfunction
 
   task run();
-    transaction #(width) obs;
+    transaction #(width, drvs) obs;
     forever begin
       mon_chkr_mbx.get(obs);
       pull_expected();
@@ -43,10 +43,10 @@ class bus_checker #(parameter int width = 16, parameter int drvs = 4);
     end
   endtask
 
-  function void check(transaction #(width) obs);
+  function void check(transaction #(width, drvs) obs);
     int rx = obs.rx_terminal;
     int idx = -1;
-    expected_item #(width) e;
+    expected_item #(width, drvs) e;
     chk_result r;
 
     for (int i = 0; i < pending[rx].size(); i++) begin
@@ -65,7 +65,7 @@ class bus_checker #(parameter int width = 16, parameter int drvs = 4);
     if (e.tr.sent_time == 0) $warning("[CHK] %h arrived with no sent_time", obs.pack());
 
     for (int j = 0; j < pending[rx].size(); j++) begin
-      transaction #(width) o = pending[rx][j].tr;
+      transaction #(width, drvs) o = pending[rx][j].tr;
       if (j != idx && o.src_terminal == e.tr.src_terminal && o.sent_time > 0 && o.sent_time < e.tr.sent_time) begin
         n_order++;
         $error("[CHK] out of order: %h", obs.pack());
