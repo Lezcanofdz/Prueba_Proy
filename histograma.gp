@@ -4,7 +4,14 @@
 
 if (!exists("csvfile")) csvfile = "reporte.csv"
 if (!exists("outfile")) outfile = csvfile[1:strlen(csvfile)-4] . "_histograma.png"
-if (!exists("nbins")) nbins = 20
+# El reloj del testbench tiene periodo 10 ns (forever #5 clk = ~clk), asi que
+# cualquier retardo real SIEMPRE es multiplo de 10. El ancho de cada bin tiene
+# que ser multiplo de este valor, si no las barras quedan desalineadas con
+# los datos reales y el histograma se ve con huecos raros.
+if (!exists("resolution")) resolution = 10
+# Si no se pide una cantidad de bins puntual, se usa un bin por cada valor de
+# retardo posible (lo mas fino que tiene sentido para datos ya cuantizados).
+if (!exists("nbins")) nbins = 5
 
 set datafile separator ","
 
@@ -16,10 +23,13 @@ d_max = STATS_max
 d_mean = STATS_mean
 
 
-bin_width = (d_max - d_min) / nbins
-if (bin_width <= 0) bin_width = 10
+raw_width = (d_max - d_min) / nbins
+bin_width = ceil(raw_width / resolution) * resolution
+if (bin_width <= 0) bin_width = resolution
+nbins_real = floor((d_max - d_min) / bin_width) + 1
 idx(x) = floor((x - d_min) / bin_width)
-bin(x) = bin_width * (idx(x) < nbins ? idx(x) : nbins - 1) + d_min + bin_width / 2.0
+bin(x) = bin_width * (idx(x) < nbins_real ? idx(x) : nbins_real - 1) + d_min + bin_width / 2.0
+
 
 set terminal pngcairo size 1000,600 font "Sans,11"
 set output outfile

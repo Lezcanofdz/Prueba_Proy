@@ -1,0 +1,13 @@
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/Library.sv
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/agent.sv
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/checker.sv
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/driver.sv
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/env.sv
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/fifo.sv
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/generator.sv
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/interface.sv
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/monitor.sv
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/scoreboard.sv
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/test.sv
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/testbench.sv
+/mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/transaction.sv

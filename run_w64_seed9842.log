@@ -1,0 +1,82 @@
+Command: /mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/./salida_w64 -cm line+tgl+cond+fsm+branch+assert +ntb_random_seed=9842 -l run_w64_seed9842.log
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version R-2020.12-SP2_Full64; Runtime version R-2020.12-SP2_Full64;  Oct  1 15:24 2026
+[TEST] ==================================================
+[TEST] INICIANDO PRUEBA base (semilla 9842)
+[TEST] Generando 50 transacciones...
+[TEST] ==================================================
+[ENV] ==================================================
+[ENV] INICIANDO AMBIENTE DE VERIFICACION
+[ENV] ==================================================
+[GEN] Creando 50 transacciones con origen aleatorio
+[GEN 0] origen=0 destino=109 retardo=6 dato=f981fe641bebc3
+[GEN 1] origen=2 destino=4 retardo=5 dato=a087ea326fd648
+[GEN 2] origen=3 destino=1 retardo=17 dato=732a68e1594d4f
+[GEN 3] origen=3 destino=2 retardo=1 dato=b9606c84bc2386
+[GEN 4] origen=2 destino=0 retardo=7 dato=bce47ac9796e72
+[GEN 5] origen=4 destino=3 retardo=5 dato=5c9786a1aa4d34
+[GEN 6] origen=3 destino=68 retardo=18 dato=871ada87d6fa9f
+[GEN 7] origen=2 destino=245 retardo=2 dato=7b05d13275a12f
+[GEN 8] origen=1 destino=159 retardo=14 dato=8970fec9fe3b41
+[GEN 9] origen=0 destino=3 retardo=14 dato=3a5db8f6a5209e
+[GEN 10] origen=1 destino=3 retardo=4 dato=5fa82cd8c7727f
+[GEN 11] origen=3 destino=2 retardo=15 dato=b612e1d596548a
+[GEN 12] origen=3 destino=89 retardo=9 dato=91b8628b426daa
+[GEN 13] origen=1 destino=4 retardo=20 dato=0a708b148dc9f9
+[GEN 14] origen=0 destino=1 retardo=7 dato=b7e33234b29d44
+[GEN 15] origen=1 destino=5 retardo=14 dato=a38293f13ec738
+[GEN 16] origen=2 destino=4 retardo=7 dato=b5ceecb6c4c298
+[GEN 17] origen=1 destino=5 retardo=6 dato=0ff90186659f8f
+[GEN 18] origen=0 destino=1 retardo=12 dato=655d9ff572f0a9
+[GEN 19] origen=4 destino=255 retardo=2 dato=bf9fba7fc33dd7
+[GEN 20] origen=3 destino=0 retardo=2 dato=f8648ba56353e8
+[GEN 21] origen=1 destino=255 retardo=4 dato=7f6969b281484c
+[GEN 22] origen=1 destino=5 retardo=6 dato=6d70da1056b735
+[GEN 23] origen=0 destino=255 retardo=14 dato=02b73fdcaebd42
+[GEN 24] origen=3 destino=1 retardo=12 dato=fb65bb4556288f
+[GEN 25] origen=4 destino=6 retardo=20 dato=6e8bcc68e791c1
+[GEN 26] origen=4 destino=1 retardo=2 dato=fcfffc581e29c2
+[GEN 27] origen=3 destino=4 retardo=4 dato=d90e65dc85269f
+[GEN 28] origen=1 destino=5 retardo=12 dato=9ba0e6db25d21f
+[GEN 29] origen=5 destino=255 retardo=14 dato=61f2dbd76da7b7
+[GEN 30] origen=1 destino=3 retardo=11 dato=00b5dc7ebea795
+[GEN 31] origen=3 destino=5 retardo=10 dato=c143a1353c4e33
+[GEN 32] origen=4 destino=0 retardo=9 dato=1bb25adf0bd914
+[GEN 33] origen=1 destino=4 retardo=8 dato=151b94908a01eb
+[GEN 34] origen=2 destino=3 retardo=0 dato=dddc1291dc472f
+[GEN 35] origen=3 destino=0 retardo=10 dato=b17614442b93df
+[GEN 36] origen=3 destino=2 retardo=20 dato=c3f8c5b71c67cf
+[GEN 37] origen=0 destino=3 retardo=13 dato=29ce61f8b323bd
+[GEN 38] origen=5 destino=255 retardo=1 dato=10bf3b6556cd91
+[GEN 39] origen=5 destino=254 retardo=9 dato=2fb75dd756bb62
+[GEN 40] origen=0 destino=1 retardo=19 dato=61c0f0fd662397
+[GEN 41] origen=4 destino=5 retardo=2 dato=6dfdab5dabe3c8
+[GEN 42] origen=0 destino=1 retardo=8 dato=2f364e94457a6b
+[GEN 43] origen=5 destino=3 retardo=10 dato=faa7b1d82e126e
+[GEN 44] origen=2 destino=255 retardo=15 dato=5d1c7d682e86be
+[GEN 45] origen=2 destino=255 retardo=6 dato=fbaccb5c1d66b1
+[GEN 46] origen=0 destino=5 retardo=0 dato=7149546e23fa75
+[GEN 47] origen=1 destino=2 retardo=2 dato=2db61938348026
+[GEN 48] origen=5 destino=255 retardo=12 dato=4d9d104c20133c
+[GEN 49] origen=5 destino=0 retardo=19 dato=15f0c994b014ed
+[ENV] Generacion de estimulos completada. Esperando vaciado de FIFOs...
+[SB] unicast=35 broadcast=8 invalidos=7 a_si_mismo=0 recepciones_esperadas=75
+[CHK] ok=75 unexpected=0 out_of_order=0 missing=0
+[CHK] Archivo reporte_base_w64_seed9842.csv generado con 75 registros
+[ENV] ==================================================
+[ENV] SIMULACION FINALIZADA
+[ENV] ==================================================
+[TEST] ==================================================
+[TEST] RESULTADO: PASS (75 paquetes correctos)
+[TEST] ==================================================
+$finish called from file "testbench.sv", line 83.
+$finish at simulation time             36875000
+
+---------------------------------------------------------------------------
+VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
+---------------------------------------------------------------------------
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 36875000 ps
+CPU Time:      2.770 seconds;       Data structure size:   1.8Mb
+Thu Oct  1 15:24:54 2026

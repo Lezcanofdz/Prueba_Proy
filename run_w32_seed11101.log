@@ -1,0 +1,82 @@
+Command: /mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/./salida_w32 -cm line+tgl+cond+fsm+branch+assert +ntb_random_seed=11101 -l run_w32_seed11101.log
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version R-2020.12-SP2_Full64; Runtime version R-2020.12-SP2_Full64;  Oct  1 15:24 2026
+[TEST] ==================================================
+[TEST] INICIANDO PRUEBA base (semilla 11101)
+[TEST] Generando 50 transacciones...
+[TEST] ==================================================
+[ENV] ==================================================
+[ENV] INICIANDO AMBIENTE DE VERIFICACION
+[ENV] ==================================================
+[GEN] Creando 50 transacciones con origen aleatorio
+[GEN 0] origen=5 destino=1 retardo=17 dato=78218c
+[GEN 1] origen=2 destino=3 retardo=10 dato=555d13
+[GEN 2] origen=4 destino=2 retardo=0 dato=0a8137
+[GEN 3] origen=0 destino=5 retardo=16 dato=5460ea
+[GEN 4] origen=2 destino=5 retardo=1 dato=c982c1
+[GEN 5] origen=4 destino=5 retardo=2 dato=b02d6f
+[GEN 6] origen=0 destino=254 retardo=11 dato=620a20
+[GEN 7] origen=4 destino=3 retardo=19 dato=c75650
+[GEN 8] origen=2 destino=0 retardo=16 dato=67dae7
+[GEN 9] origen=0 destino=5 retardo=8 dato=f06f52
+[GEN 10] origen=4 destino=0 retardo=15 dato=8976df
+[GEN 11] origen=1 destino=255 retardo=13 dato=5f1722
+[GEN 12] origen=1 destino=141 retardo=3 dato=ccbf9f
+[GEN 13] origen=0 destino=5 retardo=18 dato=61273c
+[GEN 14] origen=2 destino=5 retardo=4 dato=ea5d6f
+[GEN 15] origen=3 destino=2 retardo=5 dato=344d49
+[GEN 16] origen=5 destino=3 retardo=3 dato=35e25f
+[GEN 17] origen=0 destino=4 retardo=18 dato=91feed
+[GEN 18] origen=4 destino=0 retardo=4 dato=b50206
+[GEN 19] origen=2 destino=255 retardo=8 dato=81d07a
+[GEN 20] origen=2 destino=3 retardo=9 dato=e8b91f
+[GEN 21] origen=4 destino=3 retardo=19 dato=20ff80
+[GEN 22] origen=4 destino=80 retardo=19 dato=468de6
+[GEN 23] origen=5 destino=255 retardo=19 dato=226b23
+[GEN 24] origen=2 destino=3 retardo=1 dato=277e2d
+[GEN 25] origen=1 destino=2 retardo=4 dato=c039f8
+[GEN 26] origen=5 destino=3 retardo=20 dato=2cad8b
+[GEN 27] origen=1 destino=4 retardo=8 dato=f5b0f9
+[GEN 28] origen=0 destino=255 retardo=1 dato=417c01
+[GEN 29] origen=2 destino=4 retardo=15 dato=b93f39
+[GEN 30] origen=0 destino=255 retardo=3 dato=b0ca9e
+[GEN 31] origen=4 destino=0 retardo=5 dato=cbcf28
+[GEN 32] origen=4 destino=255 retardo=12 dato=c2156e
+[GEN 33] origen=4 destino=5 retardo=13 dato=4e6705
+[GEN 34] origen=5 destino=1 retardo=12 dato=8a12c9
+[GEN 35] origen=0 destino=255 retardo=18 dato=2bf44f
+[GEN 36] origen=4 destino=0 retardo=19 dato=a85f3f
+[GEN 37] origen=1 destino=5 retardo=7 dato=72d1b4
+[GEN 38] origen=2 destino=1 retardo=6 dato=37f926
+[GEN 39] origen=5 destino=255 retardo=15 dato=05b910
+[GEN 40] origen=3 destino=1 retardo=5 dato=c47f08
+[GEN 41] origen=1 destino=2 retardo=12 dato=0bec62
+[GEN 42] origen=4 destino=255 retardo=17 dato=060b54
+[GEN 43] origen=5 destino=2 retardo=11 dato=f72552
+[GEN 44] origen=0 destino=2 retardo=5 dato=ddac73
+[GEN 45] origen=2 destino=119 retardo=1 dato=dd7929
+[GEN 46] origen=2 destino=255 retardo=7 dato=c6cc8d
+[GEN 47] origen=4 destino=1 retardo=17 dato=dfc4a4
+[GEN 48] origen=2 destino=255 retardo=3 dato=20082b
+[GEN 49] origen=3 destino=2 retardo=3 dato=200b74
+[ENV] Generacion de estimulos completada. Esperando vaciado de FIFOs...
+[SB] unicast=35 broadcast=11 invalidos=4 a_si_mismo=0 recepciones_esperadas=90
+[CHK] ok=90 unexpected=0 out_of_order=0 missing=0
+[CHK] Archivo reporte_base_w32_seed11101.csv generado con 90 registros
+[ENV] ==================================================
+[ENV] SIMULACION FINALIZADA
+[ENV] ==================================================
+[TEST] ==================================================
+[TEST] RESULTADO: PASS (90 paquetes correctos)
+[TEST] ==================================================
+$finish called from file "testbench.sv", line 83.
+$finish at simulation time             19685000
+
+---------------------------------------------------------------------------
+VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
+---------------------------------------------------------------------------
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 19685000 ps
+CPU Time:      2.460 seconds;       Data structure size:   1.3Mb
+Thu Oct  1 15:24:31 2026

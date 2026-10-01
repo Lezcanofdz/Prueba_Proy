@@ -24,7 +24,7 @@ module testbench;
 
     // Packet width (16, 32 or 64) and number of terminals
     parameter int p_width = 16;
-    parameter int p_drvs = 4;
+    parameter int p_drvs = 6;
     // Broadcast ID given to the DUT and to the environment. The RTL compares against 8'hFF internally, so any other value is expected to fail
     parameter bit [7:0] p_bcast = 8'hFF;
 

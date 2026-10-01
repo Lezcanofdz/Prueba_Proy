@@ -1,0 +1,10 @@
+[DVCDT136] 
+Failed to load tests. Details are as the following:
+Load Failed: 
+Warning-[UCAPI-SNF] Shape Not Found
+  'Fsm' coverage shape is not there in the vdb 'salida_w16.vdb'. Coverage of 
+  this metric will not be reported.
+  Please check if proper -cm option was used at compile time.
+The design 'salida_w16.vdb' was loaded successfully.
+The following test is loaded from "salida_w16.vdb",
+    salida_w16/test

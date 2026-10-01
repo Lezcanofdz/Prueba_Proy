@@ -38,7 +38,7 @@ for W in $WIDTHS; do
         -kdb -lca -debug_acc+all -debug_region+cell+encrypt \
         -l comp_w$W.log +lint=TFIPC-L \
         -cm line+tgl+cond+fsm+branch+assert \
-        ${VERDI_HOME}/share/PLI/VCS/linux64/verdi.tab \
+        -P ${VERDI_HOME}/share/PLI/VCS/linux64/verdi.tab \
         > /dev/null \
         || { echo "Error de compilacion con ancho $W (ver comp_w$W.log)"; exit 1; }
 
@@ -52,10 +52,10 @@ for W in $WIDTHS; do
     done
 
     # --- Paso 4: cobertura en Verdi (opcional, interfaz grafica) --------
-    #if [ -n "$OPEN_VERDI" ]; then
+   # if [ -n "$OPEN_VERDI" ]; then
     #    echo "[RUN] Abriendo Verdi con la cobertura de ancho=$W ..."
-    #    verdi -cov -covdir ${OUT}.vdb &
-    #fi
+     #   verdi -cov -covdir ${OUT}.vdb &
+   # fi
 done
 
 echo "[RUN] Listo. Para ver la cobertura de un ancho especifico mas tarde:"
