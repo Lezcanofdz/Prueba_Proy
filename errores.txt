@@ -1,0 +1,57 @@
+TimeScale is 1 ns / 1 ps
+
+Error-[MFNF] Member not found
+env.sv, 27
+"this.vif."
+  Could not find member 'DRV' in interface 'dut_compl_if', at "interface.sv", 
+  2.
+  Instance stack trace:
+      bus_env#(16, 4)  test.sv, 4
+      bus_test#(16, 4)  testbench.sv, 32
+      testbench  testbench.sv, 23
+  
+
+
+Error-[MFNF] Member not found
+env.sv, 28
+"this.vif."
+  Could not find member 'MON' in interface 'dut_compl_if', at "interface.sv", 
+  2.
+  Instance stack trace:
+      bus_env#(16, 4)  test.sv, 4
+      bus_test#(16, 4)  testbench.sv, 32
+      testbench  testbench.sv, 23
+  
+
+
+Error-[MFNF] Member not found
+env.sv, 38
+"this.agent."
+  Could not find member 'driver' in class 'bus_agent', at "agent.sv", 2.
+  Instance stack trace:
+      bus_env#(16, 4)  test.sv, 4
+      bus_test#(16, 4)  testbench.sv, 32
+      testbench  testbench.sv, 23
+  
+
+
+Error-[MFNF] Member not found
+env.sv, 66
+"this.gen."
+  Could not find member 'gen_completed' in class 'generator', at 
+  "generator.sv", 2.
+  Instance stack trace:
+      bus_env#(16, 4)  test.sv, 4
+      bus_test#(16, 4)  testbench.sv, 32
+      testbench  testbench.sv, 23
+  
+
+
+Error-[TMAFTC] Too many arguments to function/task call
+testbench.sv, 74
+"bus_test::new(vif, p_bcast)"
+  The above function/task call is done with more arguments than needed.
+
+5 errors
+CPU time: .839 seconds to compile
+
