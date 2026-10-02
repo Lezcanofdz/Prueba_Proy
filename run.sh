@@ -95,8 +95,12 @@ done
 # redondea a multiplo de 10 ns (periodo del reloj), asi que sirve para
 # cualquier ancho de paquete sin tocar nada.
 echo "[RUN] Generando histogramas..."
+
 for f in reporte_*_w${WIDTH}_seed${SEED}.csv; do
-    [ -f "$f" ] && gnuplot -e "csvfile='$f'" histograma.gp
+    [ -f "$f" ] || continue
+    # Saltar los CSV sin datos (INVALID y SELF no tienen recepciones)
+    [ "$(wc -l < "$f")" -gt 1 ] || { echo "[RUN] $f sin datos, se omite"; continue; }
+    gnuplot -e "csvfile='$f'" histograma.gp
 done
 
 echo "[RUN] Listo (p_width=$WIDTH, semilla=$SEED)."

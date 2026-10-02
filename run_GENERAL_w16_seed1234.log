@@ -1,0 +1,131 @@
+Command: /mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/./salida -cm line+tgl+cond+fsm+branch+assert +ntb_random_seed=1234 +TEST_CASE=GENERAL +NUM_TX=0 -l run_GENERAL_w16_seed1234.log
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version R-2020.12-SP2_Full64; Runtime version R-2020.12-SP2_Full64;  Oct  1 22:10 2026
+[TEST] ==================================================
+[TEST] INICIANDO PRUEBA general (semilla 1234)
+[TEST] Generando transacciones por terminal, 5..20 cada una (fifo_depth=16)...
+[TEST] ==================================================
+[ENV] ==================================================
+[ENV] INICIANDO AMBIENTE DE VERIFICACION
+[ENV] ==================================================
+[GEN] Terminal 0: 18 transacciones
+[GEN 0] origen=0 destino=1 retardo=7 dato=5c
+[GEN 1] origen=0 destino=5 retardo=1 dato=40
+[GEN 2] origen=0 destino=5 retardo=0 dato=b3
+[GEN 3] origen=0 destino=255 retardo=7 dato=fa
+[GEN 4] origen=0 destino=1 retardo=11 dato=7e
+[GEN 5] origen=0 destino=5 retardo=2 dato=04
+[GEN 6] origen=0 destino=1 retardo=0 dato=9b
+[GEN 7] origen=0 destino=255 retardo=10 dato=48
+[GEN 8] origen=0 destino=5 retardo=6 dato=bf
+[GEN 9] origen=0 destino=255 retardo=5 dato=d0
+[GEN 10] origen=0 destino=4 retardo=3 dato=7b
+[GEN 11] origen=0 destino=92 retardo=9 dato=da
+[GEN 12] origen=0 destino=255 retardo=3 dato=d4
+[GEN 13] origen=0 destino=3 retardo=4 dato=94
+[GEN 14] origen=0 destino=1 retardo=14 dato=b4
+[GEN 15] origen=0 destino=3 retardo=3 dato=97
+[GEN 16] origen=0 destino=1 retardo=17 dato=d0
+[GEN 17] origen=0 destino=3 retardo=5 dato=6d
+[GEN] Terminal 1: 6 transacciones
+[GEN 18] origen=1 destino=255 retardo=17 dato=ac
+[GEN 19] origen=1 destino=2 retardo=7 dato=a6
+[GEN 20] origen=1 destino=5 retardo=15 dato=bb
+[GEN 21] origen=1 destino=4 retardo=1 dato=c8
+[GEN 22] origen=1 destino=5 retardo=6 dato=ae
+[GEN 23] origen=1 destino=5 retardo=20 dato=3d
+[GEN] Terminal 2: 7 transacciones
+[GEN 24] origen=2 destino=0 retardo=5 dato=41
+[GEN 25] origen=2 destino=5 retardo=19 dato=ed
+[GEN 26] origen=2 destino=4 retardo=5 dato=64
+[GEN 27] origen=2 destino=255 retardo=13 dato=b8
+[GEN 28] origen=2 destino=255 retardo=18 dato=77
+[GEN 29] origen=2 destino=5 retardo=3 dato=35
+[GEN 30] origen=2 destino=5 retardo=20 dato=0f
+[GEN] Terminal 3: 16 transacciones
+[GEN 31] origen=3 destino=255 retardo=15 dato=77
+[GEN 32] origen=3 destino=2 retardo=13 dato=8a
+[GEN 33] origen=3 destino=4 retardo=2 dato=57
+[GEN 34] origen=3 destino=2 retardo=16 dato=bb
+[GEN 35] origen=3 destino=67 retardo=11 dato=81
+[GEN 36] origen=3 destino=101 retardo=12 dato=33
+[GEN 37] origen=3 destino=5 retardo=8 dato=35
+[GEN 38] origen=3 destino=211 retardo=3 dato=c8
+[GEN 39] origen=3 destino=111 retardo=17 dato=e8
+[GEN 40] origen=3 destino=255 retardo=5 dato=29
+[GEN 41] origen=3 destino=2 retardo=7 dato=8a
+[GEN 42] origen=3 destino=6 retardo=9 dato=50
+[GEN 43] origen=3 destino=0 retardo=17 dato=be
+[GEN 44] origen=3 destino=0 retardo=18 dato=49
+[GEN 45] origen=3 destino=255 retardo=2 dato=84
+[GEN 46] origen=3 destino=255 retardo=20 dato=b7
+[GEN] Terminal 4: 20 transacciones
+[GEN 47] origen=4 destino=5 retardo=3 dato=2f
+[GEN 48] origen=4 destino=3 retardo=13 dato=2d
+[GEN 49] origen=4 destino=255 retardo=14 dato=4f
+[GEN 50] origen=4 destino=3 retardo=5 dato=e6
+[GEN 51] origen=4 destino=0 retardo=17 dato=19
+[GEN 52] origen=4 destino=0 retardo=4 dato=d7
+[GEN 53] origen=4 destino=1 retardo=9 dato=9a
+[GEN 54] origen=4 destino=1 retardo=17 dato=c7
+[GEN 55] origen=4 destino=207 retardo=11 dato=84
+[GEN 56] origen=4 destino=1 retardo=6 dato=56
+[GEN 57] origen=4 destino=161 retardo=18 dato=c3
+[GEN 58] origen=4 destino=112 retardo=16 dato=bc
+[GEN 59] origen=4 destino=1 retardo=1 dato=b6
+[GEN 60] origen=4 destino=5 retardo=20 dato=1a
+[GEN 61] origen=4 destino=5 retardo=5 dato=1b
+[GEN 62] origen=4 destino=2 retardo=9 dato=8a
+[GEN 63] origen=4 destino=1 retardo=9 dato=53
+[GEN 64] origen=4 destino=5 retardo=6 dato=96
+[GEN 65] origen=4 destino=2 retardo=15 dato=83
+[GEN 66] origen=4 destino=141 retardo=20 dato=0f
+[GEN] Terminal 5: 18 transacciones
+[GEN 67] origen=5 destino=4 retardo=4 dato=53
+[GEN 68] origen=5 destino=2 retardo=11 dato=6d
+[GEN 69] origen=5 destino=2 retardo=8 dato=e5
+[GEN 70] origen=5 destino=47 retardo=8 dato=a8
+[GEN 71] origen=5 destino=4 retardo=10 dato=25
+[GEN 72] origen=5 destino=3 retardo=10 dato=d1
+[GEN 73] origen=5 destino=95 retardo=0 dato=f8
+[GEN 74] origen=5 destino=255 retardo=0 dato=52
+[GEN 75] origen=5 destino=4 retardo=6 dato=5e
+[GEN 76] origen=5 destino=0 retardo=9 dato=db
+[GEN 77] origen=5 destino=89 retardo=19 dato=dd
+[GEN 78] origen=5 destino=20 retardo=19 dato=e3
+[GEN 79] origen=5 destino=255 retardo=4 dato=3c
+[GEN 80] origen=5 destino=3 retardo=12 dato=7b
+[GEN 81] origen=5 destino=2 retardo=17 dato=1a
+[GEN 82] origen=5 destino=1 retardo=6 dato=18
+[GEN 83] origen=5 destino=1 retardo=7 dato=de
+[GEN 84] origen=5 destino=1 retardo=16 dato=3e
+[ENV] Generacion de estimulos completada. Esperando vaciado de FIFOs...
+[FIFO_EMU] Terminal 0: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 4: FIFO llena (16/16), esperando espacio (overflow forzado)
+[DRV] Terminal 0: ocupacion maxima=16, veces que se lleno (stall)=1, underflow=0
+[DRV] Terminal 1: ocupacion maxima=5, veces que se lleno (stall)=0, underflow=0
+[DRV] Terminal 2: ocupacion maxima=5, veces que se lleno (stall)=0, underflow=0
+[DRV] Terminal 3: ocupacion maxima=13, veces que se lleno (stall)=0, underflow=0
+[DRV] Terminal 4: ocupacion maxima=16, veces que se lleno (stall)=1, underflow=0
+[DRV] Terminal 5: ocupacion maxima=16, veces que se lleno (stall)=0, underflow=0
+[SB] unicast=57 broadcast=14 invalidos=14 a_si_mismo=0 recepciones_esperadas=127
+[CHK] ok=127 unexpected=0 out_of_order=0 missing=0
+[CHK] retardo min=190.00 prom=913.23 max=1170.00 (ns)
+[CHK] Archivo reporte_general_w16_seed1234.csv generado con 127 registros
+[ENV] ==================================================
+[ENV] SIMULACION FINALIZADA
+[ENV] ==================================================
+[TEST] ==================================================
+[TEST] RESULTADO: PASS (127 paquetes correctos)
+[TEST] ==================================================
+$finish called from file "testbench.sv", line 83.
+$finish at simulation time             17975000
+
+---------------------------------------------------------------------------
+VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
+---------------------------------------------------------------------------
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 17975000 ps
+CPU Time:      2.210 seconds;       Data structure size:   1.0Mb
+Thu Oct  1 22:10:50 2026

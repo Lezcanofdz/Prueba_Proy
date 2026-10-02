@@ -1,35 +1,35 @@
-Command: /mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/./salida -cm line+tgl+cond+fsm+branch+assert +ntb_random_seed=1010 +TEST_CASE=OVERFLOW -l run_OVERFLOW_w16_seed1010.log
+Command: /mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/./salida -cm line+tgl+cond+fsm+branch+assert +ntb_random_seed=1234 +TEST_CASE=OVERFLOW -l run_OVERFLOW_w16_seed1234.log
 Chronologic VCS simulator copyright 1991-2020
 Contains Synopsys proprietary information.
-Compiler version R-2020.12-SP2_Full64; Runtime version R-2020.12-SP2_Full64;  Oct  1 21:24 2026
+Compiler version R-2020.12-SP2_Full64; Runtime version R-2020.12-SP2_Full64;  Oct  1 22:10 2026
 [TEST] ==================================================
-[TEST] INICIANDO PRUEBA overflow (semilla 1010)
-[TEST] Generando 20 transacciones (fifo_depth=2)...
+[TEST] INICIANDO PRUEBA overflow (semilla 1234)
+[TEST] Generando 20 transacciones en total (fifo_depth=2)...
 [TEST] ==================================================
 [ENV] ==================================================
 [ENV] INICIANDO AMBIENTE DE VERIFICACION
 [ENV] ==================================================
 [GEN] Modo overflow: inundando terminal 0 con 20 transacciones
-[GEN 0] origen=0 destino=5 retardo=0 dato=d0
-[GEN 1] origen=0 destino=5 retardo=0 dato=d8
-[GEN 2] origen=0 destino=5 retardo=0 dato=79
-[GEN 3] origen=0 destino=2 retardo=0 dato=ec
-[GEN 4] origen=0 destino=4 retardo=0 dato=52
-[GEN 5] origen=0 destino=4 retardo=0 dato=a6
-[GEN 6] origen=0 destino=4 retardo=0 dato=15
-[GEN 7] origen=0 destino=1 retardo=0 dato=27
-[GEN 8] origen=0 destino=3 retardo=0 dato=31
-[GEN 9] origen=0 destino=1 retardo=0 dato=12
-[GEN 10] origen=0 destino=4 retardo=0 dato=ef
-[GEN 11] origen=0 destino=1 retardo=0 dato=26
-[GEN 12] origen=0 destino=4 retardo=0 dato=94
-[GEN 13] origen=0 destino=5 retardo=0 dato=fc
-[GEN 14] origen=0 destino=1 retardo=0 dato=41
-[GEN 15] origen=0 destino=3 retardo=0 dato=3c
-[GEN 16] origen=0 destino=2 retardo=0 dato=89
-[GEN 17] origen=0 destino=4 retardo=0 dato=29
-[GEN 18] origen=0 destino=5 retardo=0 dato=72
-[GEN 19] origen=0 destino=3 retardo=0 dato=db
+[GEN 0] origen=0 destino=4 retardo=0 dato=43
+[GEN 1] origen=0 destino=1 retardo=0 dato=ae
+[GEN 2] origen=0 destino=1 retardo=0 dato=e6
+[GEN 3] origen=0 destino=5 retardo=0 dato=3b
+[GEN 4] origen=0 destino=1 retardo=0 dato=d7
+[GEN 5] origen=0 destino=5 retardo=0 dato=48
+[GEN 6] origen=0 destino=2 retardo=0 dato=5c
+[GEN 7] origen=0 destino=2 retardo=0 dato=40
+[GEN 8] origen=0 destino=1 retardo=0 dato=b3
+[GEN 9] origen=0 destino=1 retardo=0 dato=fa
+[GEN 10] origen=0 destino=3 retardo=0 dato=7e
+[GEN 11] origen=0 destino=4 retardo=0 dato=04
+[GEN 12] origen=0 destino=2 retardo=0 dato=9b
+[GEN 13] origen=0 destino=1 retardo=0 dato=48
+[GEN 14] origen=0 destino=2 retardo=0 dato=bf
+[GEN 15] origen=0 destino=4 retardo=0 dato=d0
+[GEN 16] origen=0 destino=4 retardo=0 dato=7b
+[GEN 17] origen=0 destino=1 retardo=0 dato=da
+[GEN 18] origen=0 destino=4 retardo=0 dato=d4
+[GEN 19] origen=0 destino=5 retardo=0 dato=94
 [ENV] Generacion de estimulos completada. Esperando vaciado de FIFOs...
 [FIFO_EMU] Terminal 0: FIFO llena (2/2), esperando espacio (overflow forzado)
 [FIFO_EMU] Terminal 0: FIFO llena (2/2), esperando espacio (overflow forzado)
@@ -58,7 +58,7 @@ Compiler version R-2020.12-SP2_Full64; Runtime version R-2020.12-SP2_Full64;  Oc
 [SB] unicast=20 broadcast=0 invalidos=0 a_si_mismo=0 recepciones_esperadas=20
 [CHK] ok=20 unexpected=0 out_of_order=0 missing=0
 [CHK] retardo min=260.00 prom=260.50 max=270.00 (ns)
-[CHK] Archivo reporte_overflow_w16_seed1010.csv generado con 20 registros
+[CHK] Archivo reporte_overflow_w16_seed1234.csv generado con 20 registros
 [ENV] ==================================================
 [ENV] SIMULACION FINALIZADA
 [ENV] ==================================================
@@ -73,5 +73,5 @@ VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitor
 ---------------------------------------------------------------------------
            V C S   S i m u l a t i o n   R e p o r t 
 Time: 6515000 ps
-CPU Time:      1.920 seconds;       Data structure size:   1.0Mb
-Thu Oct  1 21:24:30 2026
+CPU Time:      1.810 seconds;       Data structure size:   1.0Mb
+Thu Oct  1 22:10:59 2026

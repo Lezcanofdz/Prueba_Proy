@@ -90,7 +90,15 @@ class bus_test #(parameter int width = 16, parameter int drvs = 4);
 
         $display("[TEST] ==================================================");
         $display("[TEST] INICIANDO PRUEBA %s (semilla %0d)", test_name, seed);
-        $display("[TEST] Generando %0d transacciones (fifo_depth=%0d)...", num_transacciones, fifo_depth);
+        // CAMBIO 11: con +NUM_TX=0 el log decia "Generando 0 transacciones",
+        // que es confuso: ese es el modo donde cada terminal sortea su propia
+        // cantidad entre tx_min y tx_max.
+        if (num_transacciones > 0) begin
+            $display("[TEST] Generando %0d transacciones en total (fifo_depth=%0d)...", num_transacciones, fifo_depth);
+        end else begin
+            $display("[TEST] Generando transacciones por terminal, %0d..%0d cada una (fifo_depth=%0d)...",
+                     env.gen.tx_min, env.gen.tx_max, fifo_depth);
+        end
         $display("[TEST] ==================================================");
 
         env.run();

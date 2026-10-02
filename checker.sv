@@ -49,9 +49,22 @@ class bus_checker #(parameter int width = 16, parameter int drvs = 4);
     expected_item #(width, drvs) e;
     chk_result r;
 
+    // CAMBIO 9: antes se tomaba la PRIMERA expectativa que coincidiera por
+    // contenido. Con paquetes de 16 bits el payload son solo 8 bits, asi que
+    // dos transacciones distintas pueden tener el mismo {destino, payload}.
+    // La cola esta en orden de generacion, pero el bus transmite por turno
+    // rotativo, asi que el orden de transmision es otro: se emparejaba con la
+    // transaccion equivocada y quedaba una expectativa huerfana que hacia
+    // fallar el chequeo de orden de todos los paquetes siguientes.
+    //
+    // Ahora: solo son candidatas las que ya salieron (sent_time >= 0, porque
+    // un paquete no puede llegar antes de que el DUT lo saque de la FIFO), y
+    // entre ellas se toma la que se transmitio primero.
     for (int i = 0; i < pending[rx].size(); i++) begin
-      if (pending[rx][i].tr.pack() == obs.pack()) begin
-        idx = i; break;
+      if (pending[rx][i].tr.pack() != obs.pack()) continue;
+      if (pending[rx][i].tr.sent_time < 0) continue;
+      if (idx < 0 || pending[rx][i].tr.sent_time < pending[rx][idx].tr.sent_time) begin
+        idx = i;
       end
     end
 
@@ -66,12 +79,24 @@ class bus_checker #(parameter int width = 16, parameter int drvs = 4);
     // que la comparacion anterior (== 0) nunca podia dispararse.
     if (e.tr.sent_time < 0) $warning("[CHK] %h arrived with no sent_time", obs.pack());
 
-    for (int j = 0; j < pending[rx].size(); j++) begin
-      transaction #(width, drvs) o = pending[rx][j].tr;
-      if (j != idx && o.src_terminal == e.tr.src_terminal && o.sent_time > 0 && o.sent_time < e.tr.sent_time) begin
+    // CAMBIO 10: el campo overtaken de expected_item estaba declarado pero no
+    // se usaba, asi que una sola inversion se volvia a reportar con cada
+    // paquete posterior del mismo origen (cascada). Ahora el paquete adelantado
+    // se marca la primera vez y no se vuelve a contar.
+    begin
+      bit found_order_error = 0;
+      for (int j = 0; j < pending[rx].size(); j++) begin
+        expected_item #(width, drvs) p = pending[rx][j];
+        if (j != idx && !p.overtaken && p.tr.src_terminal == e.tr.src_terminal
+            && p.tr.sent_time > 0 && p.tr.sent_time < e.tr.sent_time) begin
+          p.overtaken = 1;
+          found_order_error = 1;
+        end
+      end
+      if (found_order_error) begin
         n_order++;
-        $error("[CHK] out of order: %h", obs.pack());
-        break;
+        $error("[CHK] out of order: %h en rx %0d (adelanto a un paquete anterior de la terminal %0d)",
+               obs.pack(), rx, e.tr.src_terminal);
       end
     end
 
