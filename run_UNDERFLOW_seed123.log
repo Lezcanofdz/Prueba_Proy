@@ -1,0 +1,236 @@
+Command: /mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/./salida -cm line+tgl+cond+fsm+branch+assert +ntb_random_seed=123 +TEST_CASE=UNDERFLOW -l run_UNDERFLOW_seed123.log
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version R-2020.12-SP2_Full64; Runtime version R-2020.12-SP2_Full64;  Oct  1 19:30 2026
+[TEST] ==================================================
+[TEST] INICIANDO PRUEBA underflow (semilla 123)
+[TEST] Generando 150 transacciones (fifo_depth=16)...
+[TEST] ==================================================
+[ENV] ==================================================
+[ENV] INICIANDO AMBIENTE DE VERIFICACION
+[ENV] ==================================================
+[GEN] Creando 150 transacciones con origen aleatorio
+[GEN 0] origen=3 destino=5 retardo=1 dato=43
+[GEN 1] origen=4 destino=5 retardo=0 dato=19
+[GEN 2] origen=3 destino=1 retardo=2 dato=82
+[GEN 3] origen=5 destino=166 retardo=1 dato=51
+[GEN 4] origen=5 destino=2 retardo=0 dato=b6
+[GEN 5] origen=3 destino=44 retardo=0 dato=ec
+[GEN 6] origen=2 destino=255 retardo=2 dato=5b
+[GEN 7] origen=4 destino=250 retardo=1 dato=62
+[GEN 8] origen=0 destino=4 retardo=2 dato=8d
+[GEN 9] origen=2 destino=104 retardo=1 dato=5a
+[GEN 10] origen=5 destino=255 retardo=2 dato=c0
+[GEN 11] origen=4 destino=3 retardo=1 dato=b1
+[GEN 12] origen=2 destino=5 retardo=0 dato=d3
+[GEN 13] origen=1 destino=5 retardo=1 dato=1f
+[GEN 14] origen=2 destino=0 retardo=1 dato=c0
+[GEN 15] origen=2 destino=0 retardo=1 dato=c1
+[GEN 16] origen=5 destino=0 retardo=1 dato=84
+[GEN 17] origen=1 destino=2 retardo=0 dato=4a
+[GEN 18] origen=4 destino=5 retardo=1 dato=68
+[GEN 19] origen=3 destino=4 retardo=2 dato=6f
+[GEN 20] origen=3 destino=4 retardo=1 dato=3f
+[GEN 21] origen=3 destino=4 retardo=0 dato=a4
+[GEN 22] origen=4 destino=0 retardo=1 dato=b0
+[GEN 23] origen=0 destino=1 retardo=2 dato=66
+[GEN 24] origen=5 destino=3 retardo=1 dato=b4
+[GEN 25] origen=3 destino=4 retardo=0 dato=78
+[GEN 26] origen=0 destino=255 retardo=1 dato=70
+[GEN 27] origen=1 destino=4 retardo=0 dato=cb
+[GEN 28] origen=1 destino=100 retardo=1 dato=de
+[GEN 29] origen=3 destino=1 retardo=2 dato=67
+[GEN 30] origen=3 destino=2 retardo=0 dato=90
+[GEN 31] origen=2 destino=1 retardo=2 dato=e9
+[GEN 32] origen=0 destino=3 retardo=2 dato=9b
+[GEN 33] origen=1 destino=223 retardo=2 dato=6b
+[GEN 34] origen=1 destino=0 retardo=1 dato=e6
+[GEN 35] origen=4 destino=254 retardo=2 dato=9d
+[GEN 36] origen=2 destino=255 retardo=0 dato=ed
+[GEN 37] origen=2 destino=255 retardo=2 dato=8a
+[GEN 38] origen=5 destino=1 retardo=0 dato=e3
+[GEN 39] origen=1 destino=0 retardo=2 dato=f0
+[GEN 40] origen=4 destino=99 retardo=0 dato=a8
+[GEN 41] origen=3 destino=1 retardo=2 dato=6f
+[GEN 42] origen=4 destino=255 retardo=2 dato=fa
+[GEN 43] origen=2 destino=255 retardo=2 dato=76
+[GEN 44] origen=4 destino=0 retardo=2 dato=6f
+[GEN 45] origen=0 destino=5 retardo=0 dato=8e
+[GEN 46] origen=2 destino=5 retardo=2 dato=c9
+[GEN 47] origen=3 destino=255 retardo=2 dato=fa
+[GEN 48] origen=1 destino=255 retardo=0 dato=80
+[GEN 49] origen=4 destino=255 retardo=1 dato=24
+[GEN 50] origen=4 destino=255 retardo=0 dato=55
+[GEN 51] origen=2 destino=0 retardo=2 dato=3c
+[GEN 52] origen=5 destino=0 retardo=1 dato=5b
+[GEN 53] origen=0 destino=2 retardo=0 dato=42
+[GEN 54] origen=2 destino=0 retardo=1 dato=8b
+[GEN 55] origen=0 destino=255 retardo=0 dato=56
+[GEN 56] origen=2 destino=4 retardo=1 dato=51
+[GEN 57] origen=1 destino=4 retardo=1 dato=e3
+[GEN 58] origen=1 destino=0 retardo=1 dato=3e
+[GEN 59] origen=1 destino=182 retardo=1 dato=6c
+[GEN 60] origen=0 destino=2 retardo=1 dato=00
+[GEN 61] origen=3 destino=1 retardo=0 dato=2b
+[GEN 62] origen=3 destino=1 retardo=0 dato=23
+[GEN 63] origen=2 destino=5 retardo=2 dato=d4
+[GEN 64] origen=5 destino=255 retardo=0 dato=57
+[GEN 65] origen=1 destino=223 retardo=1 dato=4c
+[GEN 66] origen=4 destino=255 retardo=1 dato=6a
+[GEN 67] origen=2 destino=3 retardo=0 dato=70
+[GEN 68] origen=4 destino=0 retardo=1 dato=2b
+[GEN 69] origen=3 destino=4 retardo=0 dato=ac
+[GEN 70] origen=3 destino=255 retardo=0 dato=67
+[GEN 71] origen=5 destino=255 retardo=2 dato=e2
+[GEN 72] origen=1 destino=110 retardo=2 dato=1b
+[GEN 73] origen=5 destino=227 retardo=0 dato=fd
+[GEN 74] origen=2 destino=0 retardo=1 dato=68
+[GEN 75] origen=3 destino=0 retardo=1 dato=9b
+[GEN 76] origen=1 destino=255 retardo=0 dato=58
+[GEN 77] origen=1 destino=0 retardo=0 dato=b9
+[GEN 78] origen=3 destino=5 retardo=2 dato=d3
+[GEN 79] origen=4 destino=0 retardo=0 dato=1d
+[GEN 80] origen=5 destino=81 retardo=1 dato=a4
+[GEN 81] origen=1 destino=0 retardo=0 dato=b7
+[GEN 82] origen=0 destino=2 retardo=0 dato=ff
+[GEN 83] origen=0 destino=5 retardo=2 dato=0e
+[GEN 84] origen=0 destino=3 retardo=1 dato=24
+[GEN 85] origen=2 destino=4 retardo=2 dato=3f
+[GEN 86] origen=4 destino=2 retardo=0 dato=1e
+[GEN 87] origen=2 destino=255 retardo=2 dato=6b
+[GEN 88] origen=2 destino=5 retardo=0 dato=33
+[GEN 89] origen=3 destino=5 retardo=0 dato=f8
+[GEN 90] origen=5 destino=255 retardo=1 dato=af
+[GEN 91] origen=3 destino=5 retardo=1 dato=86
+[GEN 92] origen=4 destino=5 retardo=2 dato=94
+[GEN 93] origen=2 destino=3 retardo=0 dato=2d
+[GEN 94] origen=4 destino=145 retardo=0 dato=79
+[GEN 95] origen=1 destino=0 retardo=2 dato=4c
+[GEN 96] origen=5 destino=2 retardo=1 dato=bf
+[GEN 97] origen=0 destino=11 retardo=2 dato=3d
+[GEN 98] origen=0 destino=5 retardo=2 dato=e6
+[GEN 99] origen=2 destino=255 retardo=1 dato=01
+[GEN 100] origen=2 destino=3 retardo=1 dato=1b
+[GEN 101] origen=0 destino=255 retardo=2 dato=4e
+[GEN 102] origen=2 destino=255 retardo=0 dato=98
+[GEN 103] origen=0 destino=58 retardo=1 dato=5e
+[GEN 104] origen=0 destino=1 retardo=0 dato=5a
+[GEN 105] origen=0 destino=1 retardo=0 dato=81
+[GEN 106] origen=3 destino=1 retardo=0 dato=dc
+[GEN 107] origen=2 destino=3 retardo=2 dato=40
+[GEN 108] origen=5 destino=2 retardo=0 dato=e1
+[GEN 109] origen=4 destino=2 retardo=1 dato=c5
+[GEN 110] origen=4 destino=218 retardo=1 dato=a2
+[GEN 111] origen=2 destino=197 retardo=0 dato=94
+[GEN 112] origen=1 destino=255 retardo=0 dato=38
+[GEN 113] origen=4 destino=1 retardo=0 dato=d5
+[GEN 114] origen=1 destino=223 retardo=1 dato=2e
+[GEN 115] origen=2 destino=0 retardo=1 dato=f7
+[GEN 116] origen=2 destino=4 retardo=2 dato=41
+[GEN 117] origen=4 destino=78 retardo=0 dato=ab
+[GEN 118] origen=5 destino=3 retardo=0 dato=fb
+[GEN 119] origen=2 destino=4 retardo=0 dato=5b
+[GEN 120] origen=2 destino=0 retardo=1 dato=af
+[GEN 121] origen=5 destino=2 retardo=1 dato=df
+[GEN 122] origen=4 destino=6 retardo=0 dato=e9
+[GEN 123] origen=2 destino=4 retardo=2 dato=0b
+[GEN 124] origen=3 destino=255 retardo=2 dato=ad
+[GEN 125] origen=2 destino=5 retardo=2 dato=c2
+[GEN 126] origen=0 destino=2 retardo=2 dato=fc
+[GEN 127] origen=1 destino=255 retardo=0 dato=80
+[GEN 128] origen=1 destino=4 retardo=2 dato=e2
+[GEN 129] origen=1 destino=4 retardo=0 dato=28
+[GEN 130] origen=3 destino=2 retardo=0 dato=6f
+[GEN 131] origen=2 destino=3 retardo=0 dato=93
+[GEN 132] origen=5 destino=2 retardo=0 dato=b8
+[GEN 133] origen=1 destino=254 retardo=0 dato=ba
+[GEN 134] origen=1 destino=255 retardo=0 dato=55
+[GEN 135] origen=4 destino=0 retardo=1 dato=9b
+[GEN 136] origen=1 destino=0 retardo=2 dato=c5
+[GEN 137] origen=5 destino=2 retardo=1 dato=c7
+[GEN 138] origen=1 destino=3 retardo=2 dato=31
+[GEN 139] origen=4 destino=148 retardo=1 dato=33
+[GEN 140] origen=5 destino=3 retardo=1 dato=74
+[GEN 141] origen=5 destino=254 retardo=1 dato=22
+[GEN 142] origen=0 destino=5 retardo=0 dato=e1
+[GEN 143] origen=5 destino=2 retardo=1 dato=97
+[GEN 144] origen=4 destino=3 retardo=1 dato=72
+[GEN 145] origen=1 destino=2 retardo=0 dato=68
+[GEN 146] origen=0 destino=86 retardo=1 dato=f6
+[GEN 147] origen=3 destino=1 retardo=2 dato=7f
+[GEN 148] origen=2 destino=35 retardo=2 dato=89
+[GEN 149] origen=5 destino=3 retardo=2 dato=ec
+[ENV] Generacion de estimulos completada. Esperando vaciado de FIFOs...
+[FIFO_EMU] Terminal 5: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 1: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 3: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 4: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 0: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 3: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 4: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 5: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 0: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 1: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 3: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 4: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 5: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 0: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 1: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 3: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 4: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 5: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 1: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 3: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 4: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 5: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 1: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 3: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 4: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 1: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 4: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 1: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 4: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 1: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 1: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 1: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[FIFO_EMU] Terminal 2: FIFO llena (16/16), esperando espacio (overflow forzado)
+[DRV] Terminal 0: ocupacion maxima=16, veces que se lleno (stall)=3
+[DRV] Terminal 1: ocupacion maxima=16, veces que se lleno (stall)=10
+[DRV] Terminal 2: ocupacion maxima=16, veces que se lleno (stall)=16
+[DRV] Terminal 3: ocupacion maxima=16, veces que se lleno (stall)=6
+[DRV] Terminal 4: ocupacion maxima=16, veces que se lleno (stall)=8
+[DRV] Terminal 5: ocupacion maxima=16, veces que se lleno (stall)=5
+[SB] unicast=98 broadcast=26 invalidos=26 a_si_mismo=0 recepciones_esperadas=228
+[CHK] ok=228 unexpected=0 out_of_order=0 missing=0
+[CHK] Archivo reporte_underflow_w16_seed123.csv generado con 228 registros
+[ENV] ==================================================
+[ENV] SIMULACION FINALIZADA
+[ENV] ==================================================
+[TEST] ==================================================
+[TEST] RESULTADO: PASS (228 paquetes correctos)
+[TEST] ==================================================
+$finish called from file "testbench.sv", line 83.
+$finish at simulation time             31185000
+
+---------------------------------------------------------------------------
+VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
+---------------------------------------------------------------------------
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 31185000 ps
+CPU Time:      2.360 seconds;       Data structure size:   1.0Mb
+Thu Oct  1 19:30:54 2026

@@ -19,6 +19,9 @@ class transaction #(parameter int width = 16, parameter int drvs = 4);
     int unsigned pct_bcast;
     int unsigned pct_inv;
     bit [7:0] bcast_id;
+    // When set, forces every unicast packet to be addressed to its own
+    // source terminal (directed corner-case test requested by the professor)
+    bit force_self;
 
     // Control and reporting fields (not randomized)
     int rx_terminal;
@@ -55,9 +58,16 @@ class transaction #(parameter int width = 16, parameter int drvs = 4);
         (kind == K_INVALID && inv_sel == 1) -> dst_addr == 254;
     }
 
-    // A terminal never receives its own packet (it holds the bus while sending), so a packet addressed to itself would never be observed
+    // A terminal never receives its own packet (it holds the bus while sending), so a packet addressed to itself would never be observed.
+    // This is relaxed only when force_self is set, for the directed
+    // "everything addressed to itself" corner-case test.
     constraint c_no_self {
-        dst_addr != src_terminal;
+        (!force_self) -> dst_addr != src_terminal;
+    }
+
+    // Directed corner case: force self-addressing on every unicast packet
+    constraint c_force_self {
+        (force_self && kind == K_UNICAST) -> dst_addr == src_terminal;
     }
 
     function new();
@@ -67,6 +77,7 @@ class transaction #(parameter int width = 16, parameter int drvs = 4);
         this.pct_bcast = 15;
         this.pct_inv = 15;
         this.bcast_id = 8'hFF;
+        this.force_self = 0;
         this.rx_terminal = -1;
         this.sent_time = -1;
         this.receive_time = -1;

@@ -17,7 +17,7 @@ class bus_env #(parameter int width = 16, parameter int drvs = 4);
 
     string csv_name = "reporte.csv";
 
-    function new(virtual dut_compl_if #(width, drvs) vif_in, int num_tx);
+    function new(virtual dut_compl_if #(width, drvs) vif_in, int num_tx, int unsigned fifo_depth = 16);
         this.vif = vif_in;
 
         mbx_gen_agent = new();
@@ -28,7 +28,7 @@ class bus_env #(parameter int width = 16, parameter int drvs = 4);
 
         gen     = new(mbx_gen_agent, num_tx);
         agent   = new(mbx_gen_agent, mbx_agent_drv, mbx_agent_sb);
-        driver  = new(vif, mbx_agent_drv);
+        driver  = new(vif, mbx_agent_drv, fifo_depth);
         monitor = new(vif, mbx_mon_chk);
         sb      = new(mbx_agent_sb, mbx_sb_chk);
         checker = new(mbx_sb_chk, mbx_mon_chk);
@@ -73,6 +73,7 @@ class bus_env #(parameter int width = 16, parameter int drvs = 4);
 
         wait_drain();
 
+        driver.report_fifo_stats();
         sb.report();
         checker.report();
         checker.write_csv(csv_name);

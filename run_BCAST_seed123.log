@@ -1,0 +1,88 @@
+Command: /mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/./salida -cm line+tgl+cond+fsm+branch+assert +ntb_random_seed=123 +TEST_CASE=BCAST -l run_BCAST_seed123.log
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version R-2020.12-SP2_Full64; Runtime version R-2020.12-SP2_Full64;  Oct  1 19:30 2026
+[TEST] ==================================================
+[TEST] INICIANDO PRUEBA bcast (semilla 123)
+[TEST] Generando 50 transacciones (fifo_depth=16)...
+[TEST] ==================================================
+[ENV] ==================================================
+[ENV] INICIANDO AMBIENTE DE VERIFICACION
+[ENV] ==================================================
+[GEN] Creando 50 transacciones con origen aleatorio
+[GEN 0] origen=0 destino=255 retardo=10 dato=43
+[GEN 1] origen=0 destino=255 retardo=6 dato=19
+[GEN 2] origen=4 destino=255 retardo=16 dato=82
+[GEN 3] origen=5 destino=255 retardo=9 dato=51
+[GEN 4] origen=5 destino=255 retardo=3 dato=b6
+[GEN 5] origen=4 destino=255 retardo=2 dato=ec
+[GEN 6] origen=3 destino=255 retardo=16 dato=5b
+[GEN 7] origen=0 destino=255 retardo=11 dato=62
+[GEN 8] origen=3 destino=255 retardo=17 dato=8d
+[GEN 9] origen=5 destino=255 retardo=7 dato=5a
+[GEN 10] origen=2 destino=255 retardo=16 dato=c0
+[GEN 11] origen=1 destino=255 retardo=7 dato=b1
+[GEN 12] origen=2 destino=255 retardo=3 dato=d3
+[GEN 13] origen=3 destino=255 retardo=9 dato=1f
+[GEN 14] origen=5 destino=255 retardo=10 dato=c0
+[GEN 15] origen=5 destino=255 retardo=12 dato=c1
+[GEN 16] origen=3 destino=255 retardo=8 dato=84
+[GEN 17] origen=5 destino=255 retardo=0 dato=4a
+[GEN 18] origen=0 destino=255 retardo=12 dato=68
+[GEN 19] origen=1 destino=255 retardo=15 dato=6f
+[GEN 20] origen=3 destino=255 retardo=8 dato=3f
+[GEN 21] origen=5 destino=255 retardo=0 dato=a4
+[GEN 22] origen=1 destino=255 retardo=10 dato=b0
+[GEN 23] origen=3 destino=255 retardo=18 dato=66
+[GEN 24] origen=3 destino=255 retardo=10 dato=b4
+[GEN 25] origen=5 destino=255 retardo=2 dato=78
+[GEN 26] origen=0 destino=255 retardo=9 dato=70
+[GEN 27] origen=1 destino=255 retardo=5 dato=cb
+[GEN 28] origen=2 destino=255 retardo=9 dato=de
+[GEN 29] origen=2 destino=255 retardo=18 dato=67
+[GEN 30] origen=5 destino=255 retardo=4 dato=90
+[GEN 31] origen=4 destino=255 retardo=19 dato=e9
+[GEN 32] origen=1 destino=255 retardo=18 dato=9b
+[GEN 33] origen=1 destino=255 retardo=17 dato=6b
+[GEN 34] origen=5 destino=255 retardo=10 dato=e6
+[GEN 35] origen=1 destino=255 retardo=14 dato=9d
+[GEN 36] origen=0 destino=255 retardo=3 dato=ed
+[GEN 37] origen=3 destino=255 retardo=16 dato=8a
+[GEN 38] origen=4 destino=255 retardo=5 dato=e3
+[GEN 39] origen=3 destino=255 retardo=14 dato=f0
+[GEN 40] origen=2 destino=255 retardo=5 dato=a8
+[GEN 41] origen=5 destino=255 retardo=16 dato=6f
+[GEN 42] origen=2 destino=255 retardo=19 dato=fa
+[GEN 43] origen=3 destino=255 retardo=17 dato=76
+[GEN 44] origen=5 destino=255 retardo=14 dato=6f
+[GEN 45] origen=2 destino=255 retardo=3 dato=8e
+[GEN 46] origen=2 destino=255 retardo=20 dato=c9
+[GEN 47] origen=2 destino=255 retardo=19 dato=fa
+[GEN 48] origen=1 destino=255 retardo=1 dato=80
+[GEN 49] origen=3 destino=255 retardo=13 dato=24
+[ENV] Generacion de estimulos completada. Esperando vaciado de FIFOs...
+[DRV] Terminal 0: ocupacion maxima=5, veces que se lleno (stall)=0
+[DRV] Terminal 1: ocupacion maxima=6, veces que se lleno (stall)=0
+[DRV] Terminal 2: ocupacion maxima=7, veces que se lleno (stall)=0
+[DRV] Terminal 3: ocupacion maxima=9, veces que se lleno (stall)=0
+[DRV] Terminal 4: ocupacion maxima=3, veces que se lleno (stall)=0
+[DRV] Terminal 5: ocupacion maxima=10, veces que se lleno (stall)=0
+[SB] unicast=0 broadcast=50 invalidos=0 a_si_mismo=0 recepciones_esperadas=250
+[CHK] ok=250 unexpected=0 out_of_order=0 missing=0
+[CHK] Archivo reporte_bcast_w16_seed123.csv generado con 250 registros
+[ENV] ==================================================
+[ENV] SIMULACION FINALIZADA
+[ENV] ==================================================
+[TEST] ==================================================
+[TEST] RESULTADO: PASS (250 paquetes correctos)
+[TEST] ==================================================
+$finish called from file "testbench.sv", line 83.
+$finish at simulation time             11005000
+
+---------------------------------------------------------------------------
+VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
+---------------------------------------------------------------------------
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 11005000 ps
+CPU Time:      2.150 seconds;       Data structure size:   1.0Mb
+Thu Oct  1 19:30:47 2026

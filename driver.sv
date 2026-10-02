@@ -9,16 +9,29 @@ class fifo_emulator #(parameter int width = 16, parameter int drvs = 4);
     // 1 while feed() holds a packet during its delay (it is in neither the mailbox nor the queue, but it has not been sent yet)
     bit in_delay;
 
+    // Maximum number of packets this terminal's outgoing FIFO can hold at
+    // once, emulating a real (finite) device FIFO like fifo.sv. 0 = unbounded
+    // (the old behaviour). Overridable per-instance for corner case tests.
+    int unsigned depth;
+    // Stats for the overflow corner case: how full the queue got, and how
+    // many times a new packet had to stall because the queue was full.
+    int unsigned max_occupancy;
+    int unsigned n_stalled;
+
     function new(
         int id,
         virtual dut_compl_if #(width, drvs) vif,
-        mailbox #(transaction #(width, drvs)) parent_child_mbx
+        mailbox #(transaction #(width, drvs)) parent_child_mbx,
+        int unsigned depth = 16
     );
         this.id = id;
         this.vif = vif;
         this.parent_child_mbx = parent_child_mbx;
         this.n_sent = 0;
         this.in_delay = 0;
+        this.depth = depth;
+        this.max_occupancy = 0;
+        this.n_stalled = 0;
     endfunction
 
     // Puts the FIFO outputs in a known idle state (used during reset)
@@ -46,7 +59,20 @@ class fifo_emulator #(parameter int width = 16, parameter int drvs = 4);
             parent_child_mbx.get(pkt);
             in_delay = 1;
             repeat (pkt.delay) @(vif.cb_drv);
+
+            // OVERFLOW case: the queue is at capacity. A real device would
+            // stall here (backpressure) rather than lose data, so we wait
+            // for the DUT to drain a slot. This is the condition to look
+            // for in the waveform/log for the overflow corner case.
+            if (depth > 0 && pkt_queue.size() >= depth) begin
+                n_stalled++;
+                $display("[FIFO_EMU] Terminal %0d: FIFO llena (%0d/%0d), esperando espacio (overflow forzado)",
+                          id, pkt_queue.size(), depth);
+                while (pkt_queue.size() >= depth) @(vif.cb_drv);
+            end
+
             pkt_queue.push_back(pkt);
+            if (pkt_queue.size() > max_occupancy) max_occupancy = pkt_queue.size();
             in_delay = 0;
         end
     endtask
@@ -85,15 +111,29 @@ class bus_driver #(parameter int width = 16, parameter int drvs = 4);
     mailbox #(transaction #(width, drvs)) parent_child_mbx[drvs];
     fifo_emulator #(width, drvs) children[drvs];
 
+    // Depth of every terminal's emulated FIFO. Default (16) is big enough
+    // that normal/random tests never hit it; a directed corner-case test
+    // can set this small (e.g. 2) via fifo_depth before calling run(), or
+    // pass it straight into new() below, to force overflow on purpose.
     function new(
         virtual dut_compl_if #(width, drvs) vif,
-        mailbox #(transaction #(width, drvs)) agent_drv_mbx
+        mailbox #(transaction #(width, drvs)) agent_drv_mbx,
+        int unsigned fifo_depth = 16
     );
         this.vif = vif;
         this.agent_drv_mbx = agent_drv_mbx;
         for (int i = 0; i < drvs; i++) begin
             parent_child_mbx[i] = new();
-            children[i] = new(i, vif, parent_child_mbx[i]);
+            children[i] = new(i, vif, parent_child_mbx[i], fifo_depth);
+        end
+    endfunction
+
+    // Overflow corner-case report: worst-case occupancy and how many times
+    // a terminal had to stall waiting for room in its FIFO.
+    function void report_fifo_stats();
+        foreach (children[i]) begin
+            $display("[DRV] Terminal %0d: ocupacion maxima=%0d, veces que se lleno (stall)=%0d",
+                      i, children[i].max_occupancy, children[i].n_stalled);
         end
     endfunction
 

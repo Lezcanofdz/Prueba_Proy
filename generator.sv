@@ -14,6 +14,12 @@ class generator #(parameter int width = 16, parameter int drvs = 4);
     int unsigned pct_bcast;
     int unsigned pct_inv;
     bit [7:0] bcast_id;
+    // Directed corner case: force every unicast packet to address itself
+    bit force_self;
+    // Directed corner case: when >= 0, every transaction is created with
+    // this fixed source terminal instead of the normal per-terminal/random
+    // distribution (used to flood one terminal's FIFO for the overflow test)
+    int flood_terminal;
 
     // Transactions created for each terminal and in total
     int tx_per_term[drvs];
@@ -33,6 +39,8 @@ class generator #(parameter int width = 16, parameter int drvs = 4);
         this.pct_bcast = 15;
         this.pct_inv = 15;
         this.bcast_id = 8'hFF;
+        this.force_self = 0;
+        this.flood_terminal = -1;
         this.total_tx = 0;
     endfunction
 
@@ -45,6 +53,7 @@ class generator #(parameter int width = 16, parameter int drvs = 4);
         pkt.pct_bcast = pct_bcast;
         pkt.pct_inv = pct_inv;
         pkt.bcast_id = bcast_id;
+        pkt.force_self = force_self;
         if (src >= 0) begin
             if (!pkt.randomize() with { src_terminal == src; }) begin
                 $fatal(1, "[GEN] Fallo la aleatorizacion de la transaccion %0d", total_tx);
@@ -60,7 +69,13 @@ class generator #(parameter int width = 16, parameter int drvs = 4);
     endtask
 
     task run();
-        if (num_transactions > 0) begin
+        if (flood_terminal >= 0) begin
+            // Overflow corner case: every transaction comes from the same
+            // terminal, back to back. Combine with min_delay = max_delay = 0
+            // and a small env.fifo_depth so the queue actually fills up.
+            $display("[GEN] Modo overflow: inundando terminal %0d con %0d transacciones", flood_terminal, num_transactions);
+            for (int i = 0; i < num_transactions; i++) create(flood_terminal);
+        end else if (num_transactions > 0) begin
             $display("[GEN] Creando %0d transacciones con origen aleatorio", num_transactions);
             for (int i = 0; i < num_transactions; i++) create(-1);
         end else begin
@@ -74,3 +89,4 @@ class generator #(parameter int width = 16, parameter int drvs = 4);
     endtask
 
 endclass
+
