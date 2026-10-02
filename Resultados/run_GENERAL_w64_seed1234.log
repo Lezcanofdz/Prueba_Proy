@@ -1,0 +1,88 @@
+Command: /mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/../Resultados/salida -cm line+tgl+cond+fsm+branch+assert -cm_dir ../Resultados/salida.vdb -cm_name GENERAL +ntb_random_seed=1234 +TEST_CASE=GENERAL +NUM_TX=0 -l ../Resultados/run_GENERAL_w64_seed1234.log
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version R-2020.12-SP2_Full64; Runtime version R-2020.12-SP2_Full64;  Oct  2 12:26 2026
+[TEST] ==================================================
+[TEST] INICIANDO PRUEBA general (semilla 1234)
+[TEST] Generando transacciones por terminal, 5..20 cada una (fifo_depth=16)...
+[TEST] ==================================================
+[ENV] ==================================================
+[ENV] INICIANDO AMBIENTE DE VERIFICACION
+[ENV] ==================================================
+[GEN] Terminal 0: 18 transacciones
+[GEN 0] origen=0 destino=255 retardo=10 dato=66bf6a8996ebd7
+[GEN 1] origen=0 destino=2 retardo=2 dato=6802ca36249a48
+[GEN 2] origen=0 destino=1 retardo=7 dato=fb6467e95d955c
+[GEN 3] origen=0 destino=3 retardo=1 dato=b6a34e6fe6cd40
+[GEN 4] origen=0 destino=3 retardo=0 dato=fee963b61248b3
+[GEN 5] origen=0 destino=255 retardo=7 dato=8400af622a2afa
+[GEN 6] origen=0 destino=1 retardo=11 dato=f70a278f435b7e
+[GEN 7] origen=0 destino=3 retardo=2 dato=f5793aadc2bd04
+[GEN 8] origen=0 destino=1 retardo=0 dato=6aaf3d89f0559b
+[GEN 9] origen=0 destino=255 retardo=10 dato=d603a34c852e48
+[GEN 10] origen=0 destino=3 retardo=6 dato=03836bd09d38bf
+[GEN 11] origen=0 destino=255 retardo=5 dato=c08366dcec3bd0
+[GEN 12] origen=0 destino=2 retardo=3 dato=81756f87f55c7b
+[GEN 13] origen=0 destino=91 retardo=9 dato=e6fde5af7e89da
+[GEN 14] origen=0 destino=255 retardo=3 dato=e7407df0cc4ad4
+[GEN 15] origen=0 destino=2 retardo=4 dato=1a060325493494
+[GEN 16] origen=0 destino=1 retardo=14 dato=446df45476dab4
+[GEN 17] origen=0 destino=2 retardo=3 dato=c79ecb113c9297
+[GEN] Terminal 1: 6 transacciones
+[GEN 18] origen=1 destino=2 retardo=17 dato=b5b9b476da8ad0
+[GEN 19] origen=1 destino=0 retardo=5 dato=0090b7b512b46d
+[GEN 20] origen=1 destino=255 retardo=17 dato=613733b76c48ac
+[GEN 21] origen=1 destino=2 retardo=7 dato=ec5e7fed43dda6
+[GEN 22] origen=1 destino=0 retardo=15 dato=8525944281a3bb
+[GEN 23] origen=1 destino=3 retardo=1 dato=5444b6628570c8
+[GEN] Terminal 2: 7 transacciones
+[GEN 24] origen=2 destino=1 retardo=6 dato=d1c71a486a97ae
+[GEN 25] origen=2 destino=3 retardo=20 dato=a292b53ac2c13d
+[GEN 26] origen=2 destino=0 retardo=5 dato=fb08fde9251641
+[GEN 27] origen=2 destino=1 retardo=19 dato=762201780b06ed
+[GEN 28] origen=2 destino=1 retardo=5 dato=bd276b5dc01e64
+[GEN 29] origen=2 destino=255 retardo=13 dato=e3e90ddd7a64b8
+[GEN 30] origen=2 destino=255 retardo=18 dato=5299040a7ce577
+[GEN] Terminal 3: 16 transacciones
+[GEN 31] origen=3 destino=2 retardo=3 dato=cea6e1c5fcca35
+[GEN 32] origen=3 destino=2 retardo=20 dato=15318bc049230f
+[GEN 33] origen=3 destino=255 retardo=15 dato=bb9ab99a9e2177
+[GEN 34] origen=3 destino=2 retardo=13 dato=97c71c067d428a
+[GEN 35] origen=3 destino=1 retardo=2 dato=bca35eb2884557
+[GEN 36] origen=3 destino=2 retardo=16 dato=84c6a83a9a40bb
+[GEN 37] origen=3 destino=65 retardo=11 dato=69a93dda28e181
+[GEN 38] origen=3 destino=100 retardo=12 dato=952be701524933
+[GEN 39] origen=3 destino=2 retardo=8 dato=f99de6bd016635
+[GEN 40] origen=3 destino=211 retardo=3 dato=44d17e884d3cc8
+[GEN 41] origen=3 destino=110 retardo=17 dato=11a2eb921098e8
+[GEN 42] origen=3 destino=255 retardo=5 dato=a8cf6d391f2329
+[GEN 43] origen=3 destino=2 retardo=7 dato=82028902a8478a
+[GEN 44] origen=3 destino=4 retardo=9 dato=736a948a0fce50
+[GEN 45] origen=3 destino=0 retardo=17 dato=5d9aafa79bedbe
+[GEN 46] origen=3 destino=0 retardo=18 dato=b2c21d52417149
+[ENV] Generacion de estimulos completada. Esperando vaciado de FIFOs...
+[FIFO_EMU] Terminal 0: FIFO llena (16/16), esperando espacio (overflow forzado)
+[DRV] Terminal 0: ocupacion maxima=16, veces que se lleno (stall)=1, underflow=0
+[DRV] Terminal 1: ocupacion maxima=5, veces que se lleno (stall)=0, underflow=0
+[DRV] Terminal 2: ocupacion maxima=5, veces que se lleno (stall)=0, underflow=0
+[DRV] Terminal 3: ocupacion maxima=14, veces que se lleno (stall)=0, underflow=0
+[SB] unicast=31 broadcast=10 invalidos=6 a_si_mismo=0 recepciones_esperadas=61
+[CHK] ok=61 unexpected=0 out_of_order=0 missing=0
+[CHK] retardo min=670.00 prom=2075.90 max=2690.00 (ns)
+[CHK] Archivo reporte_general_w64_seed1234.csv generado con 61 registros
+[ENV] ==================================================
+[ENV] SIMULACION FINALIZADA
+[ENV] ==================================================
+[TEST] ==================================================
+[TEST] RESULTADO: PASS (61 paquetes correctos)
+[TEST] ==================================================
+$finish called from file "testbench.sv", line 83.
+$finish at simulation time             34975000
+
+---------------------------------------------------------------------------
+VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
+---------------------------------------------------------------------------
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 34975000 ps
+CPU Time:      2.980 seconds;       Data structure size:   1.4Mb
+Fri Oct  2 12:26:15 2026

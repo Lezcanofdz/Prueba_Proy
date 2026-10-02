@@ -3,7 +3,7 @@
 # creating the folder automatically if it doesnt exist yet
 source /mnt/vol_NFS_rh003/estudiantes/archivos_config/synopsys_tools2.sh
 SEED=${SEED:-$RANDOM}
-WIDTH=${WIDTH:-32}
+WIDTH=${WIDTH:-64}
 DRVS=${DRVS:-4}
 OUT_DIR="../Resultados"
 

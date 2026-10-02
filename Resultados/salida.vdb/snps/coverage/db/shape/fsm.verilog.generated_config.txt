@@ -1,6 +1,6 @@
 // Synopsys, Inc.
 // User: LEZCANO_CRISTHIAN_VeriII26
-// Date: Fri Oct  2 12:21:01 2026
+// Date: Fri Oct  2 12:26:03 2026
 
 // ==================================================================================================
 // This config file prototype is produced from the last run using the complete list of extracted fsms.
