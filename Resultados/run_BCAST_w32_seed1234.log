@@ -1,0 +1,88 @@
+Command: /mnt/vol_NFS_rh003/Est_Veri_II2026/LEZCANO_FERNANDEZ_CRISTHIAN_VeriII26/Prueba_Proy/../Resultados/salida -cm line+tgl+cond+fsm+branch+assert -cm_dir ../Resultados/salida.vdb -cm_name BCAST +ntb_random_seed=1234 +TEST_CASE=BCAST +NUM_TX=0 -l ../Resultados/run_BCAST_w32_seed1234.log
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version R-2020.12-SP2_Full64; Runtime version R-2020.12-SP2_Full64;  Oct  2 12:21 2026
+[TEST] ==================================================
+[TEST] INICIANDO PRUEBA bcast (semilla 1234)
+[TEST] Generando transacciones por terminal, 5..20 cada una (fifo_depth=16)...
+[TEST] ==================================================
+[ENV] ==================================================
+[ENV] INICIANDO AMBIENTE DE VERIFICACION
+[ENV] ==================================================
+[GEN] Terminal 0: 18 transacciones
+[GEN 0] origen=0 destino=255 retardo=10 dato=96ebd7
+[GEN 1] origen=0 destino=255 retardo=2 dato=249a48
+[GEN 2] origen=0 destino=255 retardo=7 dato=5d955c
+[GEN 3] origen=0 destino=255 retardo=1 dato=e6cd40
+[GEN 4] origen=0 destino=255 retardo=0 dato=1248b3
+[GEN 5] origen=0 destino=255 retardo=7 dato=2a2afa
+[GEN 6] origen=0 destino=255 retardo=11 dato=435b7e
+[GEN 7] origen=0 destino=255 retardo=2 dato=c2bd04
+[GEN 8] origen=0 destino=255 retardo=0 dato=f0559b
+[GEN 9] origen=0 destino=255 retardo=10 dato=852e48
+[GEN 10] origen=0 destino=255 retardo=6 dato=9d38bf
+[GEN 11] origen=0 destino=255 retardo=5 dato=ec3bd0
+[GEN 12] origen=0 destino=255 retardo=3 dato=f55c7b
+[GEN 13] origen=0 destino=255 retardo=9 dato=7e89da
+[GEN 14] origen=0 destino=255 retardo=3 dato=cc4ad4
+[GEN 15] origen=0 destino=255 retardo=4 dato=493494
+[GEN 16] origen=0 destino=255 retardo=14 dato=76dab4
+[GEN 17] origen=0 destino=255 retardo=3 dato=3c9297
+[GEN] Terminal 1: 6 transacciones
+[GEN 18] origen=1 destino=255 retardo=17 dato=da8ad0
+[GEN 19] origen=1 destino=255 retardo=5 dato=12b46d
+[GEN 20] origen=1 destino=255 retardo=17 dato=6c48ac
+[GEN 21] origen=1 destino=255 retardo=7 dato=43dda6
+[GEN 22] origen=1 destino=255 retardo=15 dato=81a3bb
+[GEN 23] origen=1 destino=255 retardo=1 dato=8570c8
+[GEN] Terminal 2: 7 transacciones
+[GEN 24] origen=2 destino=255 retardo=6 dato=6a97ae
+[GEN 25] origen=2 destino=255 retardo=20 dato=c2c13d
+[GEN 26] origen=2 destino=255 retardo=5 dato=251641
+[GEN 27] origen=2 destino=255 retardo=19 dato=0b06ed
+[GEN 28] origen=2 destino=255 retardo=5 dato=c01e64
+[GEN 29] origen=2 destino=255 retardo=13 dato=7a64b8
+[GEN 30] origen=2 destino=255 retardo=18 dato=7ce577
+[GEN] Terminal 3: 16 transacciones
+[GEN 31] origen=3 destino=255 retardo=3 dato=fcca35
+[GEN 32] origen=3 destino=255 retardo=20 dato=49230f
+[GEN 33] origen=3 destino=255 retardo=15 dato=9e2177
+[GEN 34] origen=3 destino=255 retardo=13 dato=7d428a
+[GEN 35] origen=3 destino=255 retardo=2 dato=884557
+[GEN 36] origen=3 destino=255 retardo=16 dato=9a40bb
+[GEN 37] origen=3 destino=255 retardo=11 dato=28e181
+[GEN 38] origen=3 destino=255 retardo=12 dato=524933
+[GEN 39] origen=3 destino=255 retardo=8 dato=016635
+[GEN 40] origen=3 destino=255 retardo=3 dato=4d3cc8
+[GEN 41] origen=3 destino=255 retardo=17 dato=1098e8
+[GEN 42] origen=3 destino=255 retardo=5 dato=1f2329
+[GEN 43] origen=3 destino=255 retardo=7 dato=a8478a
+[GEN 44] origen=3 destino=255 retardo=9 dato=0fce50
+[GEN 45] origen=3 destino=255 retardo=17 dato=9bedbe
+[GEN 46] origen=3 destino=255 retardo=18 dato=417149
+[ENV] Generacion de estimulos completada. Esperando vaciado de FIFOs...
+[FIFO_EMU] Terminal 0: FIFO llena (16/16), esperando espacio (overflow forzado)
+[DRV] Terminal 0: ocupacion maxima=16, veces que se lleno (stall)=1, underflow=0
+[DRV] Terminal 1: ocupacion maxima=5, veces que se lleno (stall)=0, underflow=0
+[DRV] Terminal 2: ocupacion maxima=5, veces que se lleno (stall)=0, underflow=0
+[DRV] Terminal 3: ocupacion maxima=14, veces que se lleno (stall)=0, underflow=0
+[SB] unicast=0 broadcast=47 invalidos=0 a_si_mismo=0 recepciones_esperadas=141
+[CHK] ok=141 unexpected=0 out_of_order=0 missing=0
+[CHK] retardo min=350.00 prom=1054.47 max=1410.00 (ns)
+[CHK] Archivo reporte_bcast_w32_seed1234.csv generado con 141 registros
+[ENV] ==================================================
+[ENV] SIMULACION FINALIZADA
+[ENV] ==================================================
+[TEST] ==================================================
+[TEST] RESULTADO: PASS (141 paquetes correctos)
+[TEST] ==================================================
+$finish called from file "testbench.sv", line 83.
+$finish at simulation time             18655000
+
+---------------------------------------------------------------------------
+VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
+---------------------------------------------------------------------------
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 18655000 ps
+CPU Time:      2.150 seconds;       Data structure size:   1.1Mb
+Fri Oct  2 12:21:13 2026
