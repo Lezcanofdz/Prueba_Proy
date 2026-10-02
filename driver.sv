@@ -17,6 +17,10 @@ class fifo_emulator #(parameter int width = 16, parameter int drvs = 4);
     // many times a new packet had to stall because the queue was full.
     int unsigned max_occupancy;
     int unsigned n_stalled;
+    // Underflow corner case: incremented every time the DUT asked for a
+    // pop while this terminal's queue was empty (should NEVER happen if
+    // the pndng handshake is respected)
+    int unsigned n_underflow;
 
     function new(
         int id,
@@ -32,6 +36,7 @@ class fifo_emulator #(parameter int width = 16, parameter int drvs = 4);
         this.depth = depth;
         this.max_occupancy = 0;
         this.n_stalled = 0;
+        this.n_underflow = 0;
     endfunction
 
     // Puts the FIFO outputs in a known idle state (used during reset)
@@ -88,7 +93,8 @@ class fifo_emulator #(parameter int width = 16, parameter int drvs = 4);
                     current_pkt.sent_time = $realtime;
                     n_sent++;
                 end else begin
-                    $error("[DRV-%0d] pop recibido con la FIFO vacia en %0t", id, $realtime);
+                    n_underflow++;
+                    $error("[DRV-%0d] UNDERFLOW: pop recibido con la FIFO vacia en %0t", id, $realtime);
                 end
             end
             if (pkt_queue.size() > 0) begin
@@ -132,9 +138,16 @@ class bus_driver #(parameter int width = 16, parameter int drvs = 4);
     // a terminal had to stall waiting for room in its FIFO.
     function void report_fifo_stats();
         foreach (children[i]) begin
-            $display("[DRV] Terminal %0d: ocupacion maxima=%0d, veces que se lleno (stall)=%0d",
-                      i, children[i].max_occupancy, children[i].n_stalled);
+            $display("[DRV] Terminal %0d: ocupacion maxima=%0d, veces que se lleno (stall)=%0d, underflow=%0d",
+                      i, children[i].max_occupancy, children[i].n_stalled, children[i].n_underflow);
         end
+    endfunction
+
+    // Suma el underflow de todos los terminales (usado por test.sv para dar
+    // el veredicto del caso UNDERFLOW)
+    function int unsigned total_underflow();
+        total_underflow = 0;
+        foreach (children[i]) total_underflow += children[i].n_underflow;
     endfunction
 
     function void drive_idle();

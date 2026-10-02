@@ -62,7 +62,9 @@ class bus_checker #(parameter int width = 16, parameter int drvs = 4);
     end
 
     e = pending[rx][idx];
-    if (e.tr.sent_time == 0) $warning("[CHK] %h arrived with no sent_time", obs.pack());
+    // CAMBIO 7b: transaction.new() inicializa sent_time en -1, no en 0, asi
+    // que la comparacion anterior (== 0) nunca podia dispararse.
+    if (e.tr.sent_time < 0) $warning("[CHK] %h arrived with no sent_time", obs.pack());
 
     for (int j = 0; j < pending[rx].size(); j++) begin
       transaction #(width, drvs) o = pending[rx][j].tr;
@@ -109,6 +111,14 @@ class bus_checker #(parameter int width = 16, parameter int drvs = 4);
       end
     end
     $display("[CHK] ok=%0d unexpected=%0d out_of_order=%0d missing=%0d", n_ok, n_unexpected, n_order, n_missing);
+
+    // CAMBIO 7: sum_delay, min_delay y max_delay ya se acumulaban en check()
+    // pero no se mostraban en ningun lado. run.sh hace grep de "retardo min="
+    // para armar el resumen de cada caso.
+    if (n_ok > 0) begin
+      $display("[CHK] retardo min=%0.2f prom=%0.2f max=%0.2f (ns)",
+               min_delay, sum_delay / n_ok, max_delay);
+    end
   endfunction
 
   function void write_csv(string filename);

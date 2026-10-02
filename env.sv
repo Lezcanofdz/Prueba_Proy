@@ -44,7 +44,12 @@ class bus_env #(parameter int width = 16, parameter int drvs = 4);
                         repeat (4 * width) @(posedge vif.clk);
                     end
                     begin
-                        #(gen.total_tx * 1000 + 10000);
+                        // CAMBIO 8: el timeout era fijo (total_tx * 1000 + 10000 ns)
+                        // y se quedaba corto con paquetes anchos. Cada paquete ocupa
+                        // el bus ~(width + 3) ciclos de 10 ns; con drvs terminales
+                        // compitiendo, el peor caso por paquete es drvs veces eso.
+                        // El x2 es margen para los retardos entre mensajes.
+                        #(gen.total_tx * (width + 3) * drvs * 10 * 2 + 20000);
                         $error("[ENV] Timeout: the bus did not drain");
                     end
                 join_any

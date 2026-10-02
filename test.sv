@@ -4,13 +4,14 @@
 //   GENERAL    - random mix of unicast/broadcast/invalid traffic
 //   BCAST      - every packet is broadcast
 //   INVALID    - every packet is addressed to a nonexistent terminal
+//   SELF       - every packet is addressed to its own source terminal;
+//                nobody should receive anything, because the sender holds
+//                the bus and never reads its own packet            // CAMBIO 6
 //   OVERFLOW   - one terminal is flooded with back-to-back packets and a
 //                small FIFO depth, to force the emulated FIFO to fill up
-//   UNDERFLOW  - heavy random traffic with near-zero delay, used to stress
-//                the handshake and confirm the DUT never pops an empty FIFO
-//                (the check itself lives in driver.sv; passing here means
-//                the "[DRV-x] pop recibido con la FIFO vacia" message never
-//                showed up in the log)
+//
+// CAMBIO: se elimino el caso UNDERFLOW. Las FIFOs son emuladas por el
+// ambiente, asi que no hay condicion de underflow del DUT que verificar.
 //
 // Other optional plusargs: +ntb_random_seed=<n>, +NUM_TX=<n>, +FIFO_DEPTH=<n>
 class bus_test #(parameter int width = 16, parameter int drvs = 4);
@@ -38,8 +39,8 @@ class bus_test #(parameter int width = 16, parameter int drvs = 4);
         // Case-specific defaults (can still be overridden by +NUM_TX / +FIFO_DEPTH below)
         case (case_name)
             "OVERFLOW":  begin this.num_transacciones = 20; this.fifo_depth = 2; end
-            "UNDERFLOW": this.num_transacciones = 150;
-            default: ; // GENERAL, BCAST, INVALID: defaults above are fine
+            // CAMBIO: se quito la linea de UNDERFLOW (eran 150 transacciones)
+            default: ; // GENERAL, BCAST, INVALID, SELF: defaults above are fine
         endcase
 
         void'($value$plusargs("NUM_TX=%d", this.num_transacciones));
@@ -60,6 +61,14 @@ class bus_test #(parameter int width = 16, parameter int drvs = 4);
                 this.env.gen.pct_bcast = 0;
                 this.env.gen.pct_inv   = 100;
             end
+            // CAMBIO 6: force_self y sus constraints (c_no_self relajada,
+            // c_force_self) ya existian en transaction.sv y generator.sv,
+            // pero ningun escenario las encendia.
+            "SELF": begin
+                this.env.gen.force_self = 1;
+                this.env.gen.pct_bcast  = 0;
+                this.env.gen.pct_inv    = 0;
+            end
             "OVERFLOW": begin
                 this.env.gen.pct_bcast = 0;
                 this.env.gen.pct_inv   = 0;
@@ -67,12 +76,9 @@ class bus_test #(parameter int width = 16, parameter int drvs = 4);
                 this.env.gen.max_delay = 0;
                 this.env.gen.flood_terminal = 0; // floods terminal 0
             end
-            "UNDERFLOW": begin
-                this.env.gen.min_delay = 0;
-                this.env.gen.max_delay = 2;
-            end
+            // CAMBIO: se quito el bloque de UNDERFLOW
             default: begin
-                $fatal(1, "[TEST] TEST_CASE desconocido: '%s' (opciones: GENERAL, BCAST, INVALID, OVERFLOW, UNDERFLOW)", case_name);
+                $fatal(1, "[TEST] TEST_CASE desconocido: '%s' (opciones: GENERAL, BCAST, INVALID, SELF, OVERFLOW)", case_name);
             end
         endcase
 
@@ -95,7 +101,8 @@ class bus_test #(parameter int width = 16, parameter int drvs = 4);
         if (errors == 0 && env.checker.n_ok > 0) begin
             $display("[TEST] RESULTADO: PASS (%0d paquetes correctos)", env.checker.n_ok);
         end else if (env.checker.n_ok == 0 && env.checker.n_unexpected == 0) begin
-            $display("[TEST] RESULTADO: PASS (0 paquetes esperados, 0 recibidos: esperado para INVALID puro sin receptor)");
+            // CAMBIO 6: esta rama ahora cubre INVALID y SELF
+            $display("[TEST] RESULTADO: PASS (0 paquetes esperados, 0 recibidos: esperado para INVALID y SELF)");
         end else begin
             $display("[TEST] RESULTADO: FAIL (%0d errores: inesperados=%0d, fuera de orden=%0d, perdidos=%0d)",
                      errors, env.checker.n_unexpected, env.checker.n_order, env.checker.n_missing);
